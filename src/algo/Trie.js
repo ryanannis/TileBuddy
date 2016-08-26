@@ -1,10 +1,12 @@
 /*todo: turn letter into number and use arrays */
 class Trie{
+  isTerminal(){
+    
+  }
   advance(letter){
-    if(this.neighbours.letter){
-      this = this.neighbours.letter;
-      return true;
-    }
-    return false;
+    return this.neighbours.letter
+  }
+  nextExists(letter){
+
   }
 }
