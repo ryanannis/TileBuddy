@@ -5,16 +5,15 @@ import Reducer from './reducer';
 import {Router, Route, hashHistory} from 'react-router';
 import {createStore} from 'redux';
 import {Provider} from 'react-redux';
-import {PomodoroContainer} from './Components/Pomodoro';
+import {ScrabbleContainer} from './Components/Scrabble';
 import reducer from './reducer';
 import App from './App';
 
-const defaultState = Map({taskList: List.of(Map({currentTime: 5, duration: 1500})), Started: true, currentTaskIndex: 0});
-const store = createStore(reducer, defaultState);
+const store = createStore(reducer);
 
 const routes =
 <Route component={App}>
-  <Route path="/" component={PomodoroContainer} />
+  <Route path="/" component={ScrabbleContainer} />
 </Route>;
 
 ReactDOM.render(

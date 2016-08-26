@@ -1,20 +1,28 @@
-/* Computes all the possible move on a scrabble board, given
- * the root of a trie (a 26ry tree) and a board (a 9x9 array).
- * See https://www.cs.cmu.edu/afs/cs/academic/class/15451-s06/www/lectures/scrabble.pdf for
- * more details.  Note we did not use a dawg because decompression and transmitting
- * over network is more of a concern on a modern web app */
+/* See https://www.cs.cmu.edu/afs/cs/academic/class/15451-s06/www/lectures/scrabble.pdf for
+ * more details on the algorithm.*/
 function ScrabbleSolver(trieRoot, board, rack){
-  /* 'Class' variables*/
-  let crossCheck = Array();
+  let crossCheck = Array(15);
   let rack = Array();
   let wordList = Array();
+  let orientation = "across";
+
+  function rotate(){
+    let newBoard = Array(15);
+    newBoard.fill(Array(15));
+    for(let r = 0; r < 15; r++){
+      for(let c = 0; c < 15; c++){
+        newBoard[c][r] = board[r][c];
+      }
+    }
+    board = newBoard;
+  }
 
   function init(){
-    for(let i = 0; i < 15; i++) crossCheck[i] = Array(9);
+    crossCheck.fill(Array(15));
   }
 
   function addWord(r, c, word){
-
+    wordList.push({word, row:c, col: c});
   }
 
   function isSquareAnchor(r, c){
@@ -28,19 +36,19 @@ function ScrabbleSolver(trieRoot, board, rack){
 
   function isWordValid(word){
     let node = trieRoot;
-    for(letter in word){
+    for(letter of word){
+      node = node.adv(letter);
       if(!node)
         return false;
-      node = node.adv(letter);
     }
-    if(!node)
+    if(node.isTerminal())
       return true;
     return false;
   }
 
   function addCrossCheck(r, c, preWord, postWord){
     let validLetters = Array();
-    for(tile in rack){
+    for(tile of rack){
       if(isWordValid(preWord + tile + postWord)){
         validLetters.push(tile);
       }
@@ -48,43 +56,33 @@ function ScrabbleSolver(trieRoot, board, rack){
   }
 
   function computeCrossChecks(){
-    for(let c = 0, shouldCheck = Array(15); c < 15; c++) shouldCheck[i] = true;
-
     for(let r = 0; r < 15; r++){
       for(let c = 0; c < 15; c++){
-        if(crossCheck[r][c] === " ")
-          shouldCheck[c] = true;
-        else if(shouldCheck){
-          let preWord = Array();
-          let postWord = Array();
-          for(let tr = r - 1; r >= 0; r--){
-            let tile = board[tr][c];
-            if(tile === " ")
-              break;
-            preWord.add(tile);
-          }
-          for(let tr = r - 1; r >= 0; r--){
-            let tile = board[tr][c];
-            if(tile === " ")
-              break;
-            preWord.add(tile);
-          }
-          for(let tr = r + 1; r <15 0; r++){
-            let tile = board[tr][c];
-            if(tile === " ")
-              break;
-            postWord.add(tile);
-          }
-          preWord.reverse();
-          addCrossCheck(checkRow, c, preWord, postWord);
-          shouldCheck[c] = false;
+        if(crossCheck[r][c] !== " ")
+        shouldCheck[c] = continue;
+        let preWord = Array();
+        let postWord = Array();
+
+        for(let tr = r - 1; r >= 0; r--){
+          let tile = board[tr][c];
+          if(tile === " ")
+            break;
+          preWord.add(tile);
         }
+        for(let tr = r + 1; r < 15 0; r++){
+          let tile = board[tr][c];
+          if(tile === " ")
+            break;
+          postWord.add(tile);
+        }
+        preWord.reverse();
+        addCrossCheck(checkRow, c, preWord, postWord);
       }
     }
 
     function getLeftLimit(r, c){
       for(let i = 0, --r; r >= 0; i++, r--){
-        if(board[r][c] != " ")
+        if(board[r][c] !== " " || isSquareAnchor[r][c])
           break;
       }
       if(r !== 0) i--;
@@ -99,7 +97,7 @@ function ScrabbleSolver(trieRoot, board, rack){
           let adv = node.advance(tile);
           if(adv){
             rack.splice(i, 1);
-            leftPrefixes(partialWord + tile, adv, limit -1);
+            leftPrefixes(partialWord + tile, adv, limit - 1);
             rack.push(tile);
           }
         }
@@ -107,15 +105,15 @@ function ScrabbleSolver(trieRoot, board, rack){
     }
 
     function extendRight(partialWord, node, r, c){
-      if(isTerminal(node)){
-        addWord(r, c - partialWord.length, partialWord);
-      }
       if(c > 14) return;
       if(board[r][c] === " "){
+        if(isTerminal(node) && (c === 14 || board[r][c+1] === " ")){
+          addWord(r, c - partialWord.length + 1, partialWord);
+        }
         for(let i = 0 ; i < rack.length; i++){
           let tile = rack[i];
           let adv = node.advance(tile);
-          if(adv && crossCheck[r][c].indexOf(tile) !== -1){
+          if(adv && !crossCheck[r][c] || crossCheck[r][c].indexOf(tile) !== -1){
             rack.splice(i, 1);
             extendRight(partialWord + tile, adv, r, c+1);
             rack.push(tile);
@@ -129,6 +127,7 @@ function ScrabbleSolver(trieRoot, board, rack){
         }
       }
     }
+
   }
 };
 

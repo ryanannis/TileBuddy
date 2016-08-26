@@ -4,7 +4,7 @@ export default class App extends Component {
   render() {
     return (
       <div>
-        <h1> React Pomodoro App </h1>
+        <h1> Scrabble Solver </h1>
         {this.props.children}
       </div>
     );

@@ -1,7 +1,7 @@
 {
-  "name": "react-boiler",
+  "name": "Scrabble-Solver",
   "version": "1.0.0",
-  "description": "Boilerplate for react projects",
+  "description": "Webapp for generation of move lists from scrabble-like games",
   "scripts": {
     "start": "node server.js",
     "test": "mocha --compilers js:babel-core/register --require ./test/test_helper.js 'test/**/*.@(js|jsx)'",
@@ -15,7 +15,7 @@
     "react"
   ],
   "author": "Ryan Annis <tinnymint@gmail.com>",
-  "license": "Proprietary",
+  "license": "GPL",
   "bugs": {
     "url": ""
   },

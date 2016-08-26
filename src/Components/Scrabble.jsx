@@ -1,20 +1,17 @@
 import React from 'react';
 import {Map, List} from 'immutable';
 import {connect} from 'react-redux';
-import {TimeDisplayContainer} from './TimeDisplay';
-import {TimeControlsContainer} from './TimeControls';
 import * as actionCreators from '../action_creators';
+import {Board} from './Board'
 
 
-export const Pomodoro = React.createClass({
+export const Scrabble = React.createClass({
     componentDidMount: function(){
-      this.timer = setInterval(this.props.CountDown, 1000);
     },
     render: function(){
       return (
-        <div className = "Pomodoro">
-          <TimeDisplayContainer />
-          <TimeControlsContainer />
+        <div className = "ScrabbleSolver">
+          <Board />
        </div>
      );
     }
@@ -24,7 +21,7 @@ function mapStateToProps(){
   return {}
 }
 
-export const PomodoroContainer = connect(
+export const ScrabbleContainer = connect(
   mapStateToProps,
   actionCreators
-)(Pomodoro);
+)(Scrabble);
