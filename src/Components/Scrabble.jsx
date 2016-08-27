@@ -6,12 +6,25 @@ import {Board} from './Board'
 
 
 export const Scrabble = React.createClass({
+    getInitialState: function(){
+      let board = Array(15*15);
+      board.fill('');
+      return {board, verticalInput: true}
+    },
+    updateBoard: function(newLetter, r, c){
+      let boardCopy = this.state.board.slice();
+      boardCopy[r * 15 + c] = newLetter;
+      this.setState({board: boardCopy});
+    },
+    focusSlot: function(row, column){
+
+    },
     componentDidMount: function(){
     },
     render: function(){
       return (
-        <div className = "ScrabbleSolver">
-          <Board />
+        <div className = 'ScrabbleSolver'>
+          <Board inputDirection={this.state.inputDirection} ref={ref=>console.log(ref)} updateBoard={this.updateBoard} board ={this.state.board} />
        </div>
      );
     }
