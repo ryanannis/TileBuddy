@@ -6,7 +6,14 @@ import * as actionCreators from '../action_creators';
 export const BoardCell = React.createClass({
   render: function(){
     return (
-      <input value={this.props.letter} onKeyDown={this.props.keyPressHandler} />
+      var occupaction = ${this.props.letter !== "" ?
+                          this.props.letter |
+                          'm' + this.props.multiplier };
+      <input
+        value={this.props.letter}
+        onKeyDown={this.props.keyPressHandler}
+        className=`${this.props.inputDirection} ${occupation}`
+      />
     );
   }
 });

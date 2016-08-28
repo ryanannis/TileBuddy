@@ -4,7 +4,9 @@ import {connect} from 'react-redux';
 import * as actionCreators from '../action_creators';
 
 export const Rack = React.createClass({
-
+  render: function(){
+    return
+  }
 }
 
 
@@ -12,7 +14,7 @@ function mapStateToProps(){
   return {}
 };
 
-export const BoardContainer = connect(
+export const RackContainer = connect(
   mapStateToProps,
   actionCreators
 )(Rack);

@@ -7,9 +7,6 @@ import {BoardCell} from './BoardCell';
 export const Board = React.createClass({
     componentDidMount: function(){
     },
-    enterLetter: function(){
-
-    },
     handleBoardInput(action, r, c){
       let key = action.key;
       if(key >= 'a' && key <= 'z'){

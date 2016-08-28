@@ -44,6 +44,7 @@
     ]
   },
   "dependencies": {
+    "bootstrap": "^3.3.7",
     "immutable": "^3.8.1",
     "react": "^0.14.6",
     "react-addons-pure-render-mixin": "^15.3.1",
