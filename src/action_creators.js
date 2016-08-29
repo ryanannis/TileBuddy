@@ -1,10 +1,9 @@
 import fetch from 'isomorphic-fetch';
-import ReduxThunk from 'redux-thunk';
 import {Map, List} from 'immutable';
 import * as actionTypes from './action_types';
 
 export function loadDictionaryIfNeeded(url){
-
+  return (dispatch, store) =>
 }
 
 export function setLetter(letter, row, col){
