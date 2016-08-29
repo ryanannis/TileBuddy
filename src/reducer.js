@@ -1,11 +1,19 @@
 import {Map, List, fromJS} from 'immutable';
+import {combineReducers} from 'redux-immutable';
 
-function dictionaryReducer(dictionaryState, action){
-  
+function wordDisplay(state, action){
+  return state;
 }
 
-export default function reducer(state = Map(), action){
+function dictionary(state, action){
   switch(action.type){
+    case
   }
   return state;
+}
+
+function()
+
+export default function reducer(state = Map(), action){
+
 }

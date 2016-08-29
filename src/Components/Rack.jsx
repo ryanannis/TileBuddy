@@ -5,10 +5,11 @@ import * as actionCreators from '../action_creators';
 
 export const Rack = React.createClass({
   render: function(){
-    return
+    return <input
+              value={this.props.rackTiles}
+            />
   }
-}
-
+});
 
 function mapStateToProps(){
   return {}

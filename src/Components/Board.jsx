@@ -2,27 +2,77 @@ import React from 'react';
 import {Map, List} from 'immutable';
 import {connect} from 'react-redux';
 import * as actionCreators from '../action_creators';
-import {BoardCell} from './BoardCell';
+import {BoardCellContainer} from './BoardCell';
+import {Directions} from '../input_directions.js'
 
 export const Board = React.createClass({
     componentDidMount: function(){
     },
-    handleBoardInput(action, r, c){
+    handleAlphabeticInput: function(key, r, c){
+      this.props.update_board(key, r,c);
+      if(this.props.inputDirection === Directions.RIGHT){
+        this.focusCell(r, c + 1);
+      }
+      if(this.props.inputDirection === Directions.DOWN){
+        this.focusCell(r + 1, c);
+      }
+    },
+    handleDeletion: function(){
+      this.props.update_board('', r, c);
+      if(this.props.inputDirection === Directions.DOWN){
+        this.focusCell(r-1, c);
+      }
+      else if(this.props.inputDirection === Directions.UP){
+        this.focusCell(r+1, c);
+      }
+    },
+    handleArrowMovement: function(key, r, c){
+      if(key === 'ArrowLeft'){
+        if(this.props.inputDirection === Directions.RIGHT){
+          this.focusCell(r, c-1);
+        }
+        else if(this.props.inputDirection === Directions.DOWN){
+          this.focusCell(r, c-1);
+          this.props.setInputDirection(Directions.RIGHT);
+        }
+      }
+      else if(key === 'ArrowUp'){
+        if(this.props.inputDirection === Directions.RIGHT){
+          this.focusCell(r-1, c);
+          this.props.setInputDirection(Directions.DOWN);
+        }
+        else if(this.props.inputDirection === Directions.DOWN){
+          this.focusCell(r-1, c);
+        }
+      }
+      else if(key === 'ArrowDown'){
+        if(this.props.inputDirection === Directions.RIGHT){
+          this.props.setInputDirection(Directions.DOWN);
+        }
+        else if(this.props.inputDirection === Directions.DOWN){
+          this.focusCell(r+1, c);
+        }
+      }
+    },
+    handleBoardInput: function(action, r, c){
       let key = action.key;
       if(key >= 'a' && key <= 'z'){
-        this.props.updateBoard(key, r,c);
-        if(!this.props.verticalInput && c < 14){
-          var child = this.refs[r * 15 + c + 1];
-          child.getDOMNode().focus();
-        }
-        if(this.props.verticalInput && r < 14){
-          var child = this.refs[(r + 1) * 15 + c];
-          child.getDOMNode().focus();
-        }
-      }
+        this.handleAlphabeticInput();
+      },
       else if(key === 'Backspace' || key === 'Delete'){
-        this.props.updateBoard('', r, c);
+        this.handleDeletion();
       }
+      if(key === 'ArrowRight' ||
+         key === 'ArrowLeft'  ||
+         key === 'ArrowDown'  ||
+         key === 'ArrowUp'){
+           this.handleArrowMovement(key, r, c);
+      }
+    },
+    focusCell: function(r, c){
+      if(r > 14 || c > 14)
+      var child = this.refs[r * 15 + c];
+      child.getDOMNode().focus();
     },
     createRow: function(r){
       let cells = [];
@@ -33,7 +83,6 @@ export const Board = React.createClass({
               ref = {ref => this.refs[r * 15 + c] = ref}
               key = {r * 15 + c}
               letter = {this.props.board[r*15 + c]}
-              inputDirection = {this.props.inputDirection}
               keyPressHandler = {(action)=>this.handleBoardInput(action, r, c)}
             />
           </td>
@@ -58,8 +107,11 @@ export const Board = React.createClass({
     }
 });
 
-function mapStateToProps(){
-  return {}
+function mapStateToProps(state){
+  return {
+    board: state.getIn(['board', 'letterMap']),
+    inputDirection: state.getIn(['board', 'inputDirection'])
+  }
 };
 
 export const BoardContainer = connect(

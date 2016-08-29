@@ -1,0 +1,29 @@
+{
+  wordDisplay: {
+    sortedValue:
+    hoveredID:
+  },
+  board: {
+    inputDirection: "RIGHT",
+    bonusmap: [[]],
+    lettermap: [[]]
+  },
+  rack:{
+    tiles: []
+  },
+  dictionaries: {
+    "/sowpods.txt"{
+      isFetching: true,
+      rootNode: Node
+    }
+  },
+  solution_display :{
+    1: {
+      word: "Word",
+      score: 145,
+      row: 8,
+      col: 5,
+      direction: down
+    }
+   }
+}
