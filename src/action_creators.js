@@ -2,8 +2,47 @@ import fetch from 'isomorphic-fetch';
 import {Map, List} from 'immutable';
 import * as actionTypes from './action_types';
 
+function requestDictionary(url){
+  return {
+    type: actionTypes.fetch_dictionary_request,
+    url
+  }
+}
+
+function recieveDictionary(url, dictionaryWrapper){
+  return {
+    type: actionTypes.fetch_dictionary_success,
+    url,
+    dictionaryWrapper
+  }
+}
+
+function failRecievingDictionary(url){
+  return {
+    type: actionTypes.fetch_dictionary_failure,
+    url
+  }
+}
+
+
+function loadDictionary(url){
+  return (dispatch) => {
+    const state = getState();
+    dispatch(requestDictionary(url));
+    return fetch(url)
+      .then(text => dispatch(recieveDictionary(url, text)))
+      .catch((err) => dispatch(failRecievingDictionary(url)))
+  }
+}
+
 export function loadDictionaryIfNeeded(url){
-  return (dispatch, store) =>
+  return (dispatch, getState) => {
+    const state = getState();
+    if(state.getIn(['dictionaries', url]) &&
+       !state.getIn(['dictionaries', url, 'isFetching'])){
+         return dispatch(loadDictionary(url));
+    }
+  }
 }
 
 export function setLetter(letter, row, col){
