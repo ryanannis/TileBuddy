@@ -1,6 +1,7 @@
 import fetch from 'isomorphic-fetch';
 import {Map, List} from 'immutable';
 import * as actionTypes from './action_types';
+import {TrieNode} from '../algo/Trie'
 
 function requestDictionary(url){
   return {
@@ -10,10 +11,16 @@ function requestDictionary(url){
 }
 
 function recieveDictionary(url, dictionaryWrapper){
+  let root = trie;
+  /* TODO:  If this causes performance problems with memory then
+   * maybe we can somehow do buffered streaming?*/
+  for(word of dictionaryWrapper.dictionary.split('\n')){
+    root.addWord(word);
+  }
   return {
     type: actionTypes.fetch_dictionary_success,
     url,
-    dictionaryWrapper
+    rootNode
   }
 }
 
@@ -23,7 +30,6 @@ function failRecievingDictionary(url){
     url
   }
 }
-
 
 function loadDictionary(url){
   return (dispatch) => {
@@ -38,7 +44,7 @@ function loadDictionary(url){
 export function loadDictionaryIfNeeded(url){
   return (dispatch, getState) => {
     const state = getState();
-    if(state.getIn(['dictionaries', url]) &&
+    if(!state.getIn(['dictionaries', url]) ||
        !state.getIn(['dictionaries', url, 'isFetching'])){
          return dispatch(loadDictionary(url));
     }
@@ -54,10 +60,10 @@ export function setLetter(letter, row, col){
   }
 }
 
-export function setRack(rack){
+export function setRack(tiles){
   return{
     type: actionTypes.set_rack,
-    rack
+    tiles
   }
 }
 
