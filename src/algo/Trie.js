@@ -29,4 +29,4 @@ class TrieNode{
   }
 }
 
-export TrieNode;
+export {TrieNode};

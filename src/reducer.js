@@ -1,17 +1,28 @@
 import {Map, List, fromJS} from 'immutable';
 import {combineReducers} from 'redux-immutable';
 import * as actionTypes from './action_types';
+import {Directions} from './input_directions'
+
+let defaultBoardState = Array(15*15).fill("");
 
 function wordDisplay(state, action){
-  case actionTypes.calculate_results:
-  case actionTypes.set_input_direction:
+  switch(action.type){
+    case actionTypes.calculate_results:
+      return state;
+    case actionTypes.set_input_direction:
+      return state;
+  }
+  return state;
 }
 
-function board(state, action){
+function board(state = {
+  letterMap: defaultBoardState,
+  inputDirection: Directions.RIGHT
+}, action){
   switch(action.type){
     case actionTypes.set_letter:
       state.update('letterMap', arr => {
-        arr[action.r * 15 = action.c] = action.letter;
+        arr[action.r * 15 + action.c] = action.letter;
         return arr;
       });
   }
@@ -42,10 +53,11 @@ function dictionary(state, action){
 }
 
 export default function reducer(state = Map(), action){
-  combineReducers(
+  return state;
+  combineReducers({
     board,
     wordDisplay,
     dictionary,
     rack
-  )
+  })
 }

@@ -58,7 +58,7 @@ export const Board = React.createClass({
       let key = action.key;
       if(key >= 'a' && key <= 'z'){
         this.handleAlphabeticInput();
-      },
+      }
       else if(key === 'Backspace' || key === 'Delete'){
         this.handleDeletion();
       }
@@ -79,7 +79,7 @@ export const Board = React.createClass({
       for(let c = 0; c < 15; c++){
         cells.push(
           <td key = {'d' + c}>
-            <BoardCell
+            <BoardCellContainer
               ref = {ref => this.refs[r * 15 + c] = ref}
               key = {r * 15 + c}
               letter = {this.props.board[r*15 + c]}

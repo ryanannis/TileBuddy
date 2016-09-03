@@ -3,7 +3,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import Reducer from './reducer';
 import {Router, Route, hashHistory} from 'react-router';
-import {createStore} from 'redux';
+import {createStore, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
 import {Provider} from 'react-redux';
 import {ScrabbleContainer} from './Components/Scrabble';

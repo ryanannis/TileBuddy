@@ -1,7 +1,7 @@
 import fetch from 'isomorphic-fetch';
 import {Map, List} from 'immutable';
 import * as actionTypes from './action_types';
-import {TrieNode} from '../algo/Trie'
+import {TrieNode} from './algo/Trie'
 
 function requestDictionary(url){
   return {
