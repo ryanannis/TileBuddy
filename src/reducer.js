@@ -9,8 +9,6 @@ function wordDisplay(state = fromJS({}), action){
   switch(action.type){
     case actionTypes.calculate_results:
       return state;
-    case actionTypes.set_input_direction:
-      return state;
   }
   return state;
 }
@@ -29,6 +27,9 @@ function board(state = Map({
       console.log(newState);
       return newState;
     }
+    case actionTypes.set_input_direction:
+      console.log("gezo was here !!!");
+      return state.set("inputDirection", action.direction);
   }
   return state;
 }

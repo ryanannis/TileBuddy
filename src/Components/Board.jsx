@@ -16,7 +16,7 @@ export const Board = React.createClass({
         this.focusCell(r + 1, c);
       }
     },
-    handleDeletion: function(){
+    handleDeletion: function(r, c){
       this.props.setLetter('', r, c);
       if(this.props.inputDirection === Directions.DOWN){
         this.focusCell(r-1, c);
@@ -31,25 +31,31 @@ export const Board = React.createClass({
           this.focusCell(r, c-1);
         }
         else if(this.props.inputDirection === Directions.DOWN){
-          this.focusCell(r, c-1);
+          this.props.setInputDirection(Directions.RIGHT);
+        }
+      }
+      else if(key === 'ArrowRight'){
+        if(this.props.inputDirection === Directions.RIGHT){
+          this.focusCell(r, c+1);
+        }
+        else if(this.props.inputDirection === Directions.DOWN){
           this.props.setInputDirection(Directions.RIGHT);
         }
       }
       else if(key === 'ArrowUp'){
-        if(this.props.inputDirection === Directions.RIGHT){
+        if(this.props.inputDirection === Directions.DOWN){
           this.focusCell(r-1, c);
-          this.props.setInputDirection(Directions.DOWN);
         }
-        else if(this.props.inputDirection === Directions.DOWN){
-          this.focusCell(r-1, c);
+        else if(this.props.inputDirection === Directions.RIGHT){
+          this.props.setInputDirection(Directions.DOWN);
         }
       }
       else if(key === 'ArrowDown'){
-        if(this.props.inputDirection === Directions.RIGHT){
-          this.props.setInputDirection(Directions.DOWN);
-        }
-        else if(this.props.inputDirection === Directions.DOWN){
+        if(this.props.inputDirection === Directions.DOWN){
           this.focusCell(r+1, c);
+        }
+        else if(this.props.inputDirection === Directions.RIGHT){
+          this.props.setInputDirection(Directions.DOWN);
         }
       }
     },
@@ -58,8 +64,11 @@ export const Board = React.createClass({
       if(key >= 'a' && key <= 'z'){
         this.handleAlphabeticInput(key, r, c);
       }
+      else if (key === 'Enter'){
+        this.handleAlphabeticInput('', r, c);
+      }
       else if(key === 'Backspace' || key === 'Delete'){
-        this.handleDeletion();
+        this.handleDeletion(r,c);
       }
       if(key === 'ArrowRight' ||
          key === 'ArrowLeft'  ||
