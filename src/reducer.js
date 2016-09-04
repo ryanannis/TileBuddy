@@ -5,7 +5,7 @@ import {Directions} from './input_directions'
 
 let defaultBoardState = Array(15*15).fill("");
 
-function wordDisplay(state, action){
+function wordDisplay(state = fromJS({}), action){
   switch(action.type){
     case actionTypes.calculate_results:
       return state;
@@ -15,21 +15,27 @@ function wordDisplay(state, action){
   return state;
 }
 
-function board(state = {
+function board(state = Map({
   letterMap: defaultBoardState,
   inputDirection: Directions.RIGHT
-}, action){
+}), action){
   switch(action.type){
-    case actionTypes.set_letter:
-      state.update('letterMap', arr => {
-        arr[action.r * 15 + action.c] = action.letter;
-        return arr;
+    case actionTypes.set_letter: {
+      let newState = state.update('letterMap', arr => {
+        let newArr = arr.slice();
+        newArr[action.row * 15 + action.col] = action.letter;
+        return newArr;
       });
+      console.log(newState);
+      return newState;
+    }
   }
   return state;
 }
 
-function rack(state, action){
+function rack(state = fromJS({
+  tiles: []
+}), action){
   switch(action.type){
     case actionTypes.set_rack:
       state.set('tiles', action.tiles)
@@ -37,7 +43,7 @@ function rack(state, action){
   return state;
 }
 
-function dictionary(state, action){
+function dictonaries(state = fromJS({}), action){
   switch(action.type){
     case actionTypes.fetch_dictionary_success:
       return state.set(action.url, {
@@ -52,12 +58,9 @@ function dictionary(state, action){
   return state;
 }
 
-export default function reducer(state = Map(), action){
-  return state;
-  combineReducers({
+export default combineReducers({
     board,
     wordDisplay,
-    dictionary,
+    dictonaries,
     rack
-  })
-}
+})

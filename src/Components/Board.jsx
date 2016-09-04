@@ -1,4 +1,5 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 import {Map, List} from 'immutable';
 import {connect} from 'react-redux';
 import * as actionCreators from '../action_creators';
@@ -6,10 +7,8 @@ import {BoardCellContainer} from './BoardCell';
 import {Directions} from '../input_directions.js'
 
 export const Board = React.createClass({
-    componentDidMount: function(){
-    },
     handleAlphabeticInput: function(key, r, c){
-      this.props.update_board(key, r,c);
+      this.props.setLetter(key, r, c);
       if(this.props.inputDirection === Directions.RIGHT){
         this.focusCell(r, c + 1);
       }
@@ -18,7 +17,7 @@ export const Board = React.createClass({
       }
     },
     handleDeletion: function(){
-      this.props.update_board('', r, c);
+      this.props.setLetter('', r, c);
       if(this.props.inputDirection === Directions.DOWN){
         this.focusCell(r-1, c);
       }
@@ -57,7 +56,7 @@ export const Board = React.createClass({
     handleBoardInput: function(action, r, c){
       let key = action.key;
       if(key >= 'a' && key <= 'z'){
-        this.handleAlphabeticInput();
+        this.handleAlphabeticInput(key, r, c);
       }
       else if(key === 'Backspace' || key === 'Delete'){
         this.handleDeletion();
@@ -70,9 +69,10 @@ export const Board = React.createClass({
       }
     },
     focusCell: function(r, c){
-      if(r > 14 || c > 14)
-      var child = this.refs[r * 15 + c];
-      child.getDOMNode().focus();
+      if(r > 14 || c > 14 || r < 0 || c < 0)
+        return;
+      let child = this.refs[r * 15 + c];
+      ReactDOM.findDOMNode(child).focus();
     },
     createRow: function(r){
       let cells = [];
@@ -82,7 +82,7 @@ export const Board = React.createClass({
             <BoardCellContainer
               ref = {ref => this.refs[r * 15 + c] = ref}
               key = {r * 15 + c}
-              letter = {this.props.board[r*15 + c]}
+              letter = {this.props.board[r * 15 + c]}
               keyPressHandler = {(action)=>this.handleBoardInput(action, r, c)}
             />
           </td>
@@ -107,7 +107,8 @@ export const Board = React.createClass({
     }
 });
 
-function mapStateToProps(state){
+function mapStateToProps(state) {
+  console.log(state.get('board'));
   return {
     board: state.getIn(['board', 'letterMap']),
     inputDirection: state.getIn(['board', 'inputDirection'])
