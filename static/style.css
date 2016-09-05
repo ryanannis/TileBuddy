@@ -2,22 +2,37 @@ table {
   width: 700px;
   height: 700px;
 }
+
 td {
   width: 5%;
   height: 5%;
-  margin: 0 0 0 0;
-  padding: 0 0 0 0;
-  border-style: none;
-}
-tr {
-  margin: 0 0 0 0;
-  padding: 0 0 0 0;
-  border-style: none;
 }
 input {
-  border-style: 1 px solid;
+  border:none;
   width: 100%;
+  text-align: center;
+  vertical-align: middle;
   height: 100%;
   margin: 0 0 0 0;
   padding: 0 0 0 0;
+}
+
+table {
+    border-collapse: collapse;
+    display: inline-table;
+    border-spacing: 0;
+    border: 2px solid;
+    border-color: #FFFFFF;
+}
+
+td {
+    border: 1px solid;
+    border-color: #818181;
+}
+
+.rackTileSlot {
+    border: 1px solid;
+    width: 50px;
+    height: 50px;
+    border-color: #818181;
 }

@@ -24,22 +24,20 @@ function board(state = Map({
         newArr[action.row * 15 + action.col] = action.letter;
         return newArr;
       });
-      console.log(newState);
       return newState;
     }
     case actionTypes.set_input_direction:
-      console.log("gezo was here !!!");
       return state.set("inputDirection", action.direction);
   }
   return state;
 }
 
-function rack(state = fromJS({
-  tiles: []
+function rack(state = Map({
+  tiles: ['','','','','','','']
 }), action){
   switch(action.type){
     case actionTypes.set_rack:
-      state.set('tiles', action.tiles)
+      return state.set('tiles', action.tiles);
   }
   return state;
 }

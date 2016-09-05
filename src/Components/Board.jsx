@@ -18,11 +18,11 @@ export const Board = React.createClass({
     },
     handleDeletion: function(r, c){
       this.props.setLetter('', r, c);
-      if(this.props.inputDirection === Directions.DOWN){
-        this.focusCell(r-1, c);
+      if(this.props.inputDirection === Directions.RIGHT){
+        this.focusCell(r, c-1);
       }
-      else if(this.props.inputDirection === Directions.UP){
-        this.focusCell(r+1, c);
+      else if(this.props.inputDirection === Directions.DOWN){
+        this.focusCell(r-1, c);
       }
     },
     handleArrowMovement: function(key, r, c){
@@ -117,7 +117,6 @@ export const Board = React.createClass({
 });
 
 function mapStateToProps(state) {
-  console.log(state.get('board'));
   return {
     board: state.getIn(['board', 'letterMap']),
     inputDirection: state.getIn(['board', 'inputDirection'])
