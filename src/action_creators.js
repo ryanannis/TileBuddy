@@ -3,6 +3,19 @@ import {Map, List} from 'immutable';
 import * as actionTypes from './action_types';
 import {TrieNode} from './algo/Trie'
 
+function executeSearch(){
+  return {
+    type: actionTypes.execute_search
+  }
+}
+
+function selectDictionary(name){
+  return {
+    type: actionTypes.select_dictionary,
+    name
+  }
+}
+
 function requestDictionary(url){
   return {
     type: actionTypes.fetch_dictionary_request,

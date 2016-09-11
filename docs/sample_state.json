@@ -11,11 +11,12 @@
   rack:{
     tiles: []
   },
-  dictionaries: {
-    "/sowpods.txt"{
+  dictionaries: [
+      url: "/sowpods.txt"
       isFetching: true,
       rootNode: Node
-    }
+    ]
+
   },
   solution_display :{
     1: {

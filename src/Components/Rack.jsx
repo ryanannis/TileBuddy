@@ -25,6 +25,7 @@ export const Rack = React.createClass({
      return;
     let child = this.refs[i];
     this.forceUpdate();
+    if(child)
     ReactDOM.findDOMNode(child).focus();
   },
 

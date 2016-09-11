@@ -109,7 +109,7 @@ export const Board = React.createClass({
     render: function(){
       this.refs = Array(15*15);
       return (
-        <div className = "Board">
+        <div className = 'Board'>
           {this.grid()}
        </div>
      );

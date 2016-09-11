@@ -5,22 +5,23 @@ import * as actionCreators from '../action_creators';
 import { BoardCellContainer } from './BoardCell';
 import {Directions} from '../input_directions.js'
 
-export const WordList = React.createClass({
+export const Search = React.createClass({
   render: function(){
-    return (
+    return(
       <div>
-        WordListContent
+        <button className='search' onClick={e => this.props.executeSearch} >
+          Search!
+        </button>
       </div>
-    )
+    );
   }
 });
 
 function mapStateToProps(state) {
-  return {
-  }
-};
+  return {}
+}
 
-export const WordListContainer = connect(
+export const SearchContainer = connect(
   mapStateToProps,
   actionCreators
-)(WordList);
+)(Search);

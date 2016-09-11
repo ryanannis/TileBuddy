@@ -2,7 +2,6 @@
  * more details on the algorithm.*/
 function ScrabbleSolver(trieRoot, board, rack){
   let crossCheck = Array(15);
-  let rack = Array();
   let wordList = Array();
   let orientation = "across";
 
@@ -59,7 +58,7 @@ function ScrabbleSolver(trieRoot, board, rack){
     for(let r = 0; r < 15; r++){
       for(let c = 0; c < 15; c++){
         if(crossCheck[r][c] !== " ")
-        shouldCheck[c] = continue;
+           continue;
         let preWord = Array();
         let postWord = Array();
 
@@ -69,7 +68,7 @@ function ScrabbleSolver(trieRoot, board, rack){
             break;
           preWord.add(tile);
         }
-        for(let tr = r + 1; r < 15 0; r++){
+        for(let tr = r + 1; tr < 15; tr++){
           let tile = board[tr][c];
           if(tile === " ")
             break;
