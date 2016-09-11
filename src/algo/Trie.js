@@ -1,5 +1,5 @@
 /*todo: turn letter into number and use arrays */
-class TrieNode{
+class Trie{
   constructor(){
     this.edges = new Map();
   }
@@ -7,12 +7,12 @@ class TrieNode{
   /* Adds new node with THIS AS ROOT */
   addWord(word){
     if(this.edges.has(word[0])){
-      this.edges.get(word[0]).addWord(word.shift());
+      this.edges.get(word[0]).addWord(word.substring(1));
     }
     else{
-      let nextNode = new TrieNode();
+      let nextNode = new Trie();
       this.edges.set(word[0], nextNode);
-      nextNode.addWord(word.shift());
+      nextNode.addWord(word.substring(1));
     }
   }
 
@@ -29,4 +29,4 @@ class TrieNode{
   }
 }
 
-export {TrieNode};
+export {Trie};

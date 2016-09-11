@@ -9,7 +9,7 @@ export const Search = React.createClass({
   render: function(){
     return(
       <div>
-        <button className='search' onClick={e => this.props.executeSearch} >
+        <button className='search' onClick={ e => this.props.executeSearch() } >
           Search!
         </button>
       </div>

@@ -5,19 +5,22 @@ import {Directions} from './input_directions'
 
 let defaultBoardState = Array(15*15).fill('');
 
-let DictionaryList ={
+let DICTIONARYLIST ={
   'SOWPODS': {
-    url: './wordlists/SOWPODS.txt',
-    loading: false
+    url: './static/wordlists/SOWPODS.txt',
+    fetching: false
 }};
 
-function wordDisplay(state = fromJS({}), action){
+/* Be careful here, state is global state, NOT just wordDisplay */
+function wordDisplay(state, action){
   switch(action.type){
     case actionTypes.execute_search: {
-      let rootNode = c
+      let selectedDictionaryName = state.getIn(['dictionaries', 'selectedDictionary']);
+      let rootNode = state.getIn(['dictionaries', 'dictionaryList', selectedDictionaryName]);
     }
   }
-  return state;
+
+  return state.wordDisplay ? state.wordDisplay : Map({});
 }
 
 function board(state = Map({
@@ -50,7 +53,7 @@ function rack(state = Map({
 }
 
 function dictionaries(state = Map({
-  dictionaryList: DictionaryList,
+  dictionaryList: DICTIONARYLIST,
   selectedDictionary: 'SOWPODS'
 }), action){
   switch(action.type){
@@ -70,9 +73,12 @@ function dictionaries(state = Map({
   return state;
 }
 
-export default combineReducers({
-    board,
-    wordDisplay,
-    dictionaries,
-    rack
-})
+/* We don't use default combineReducers since wordDisplay is not independent and needs entire state.*/
+export default function reducer(state = Map({}), action){
+  return(Map({
+       board: board(state.get('board'), action),
+       rack: rack(state.get('rack'), action),
+       dictionaries: dictionaries(state.get('dictionaries'), action),
+       wordDisplay: wordDisplay(state, action)
+  }))
+}

@@ -23,7 +23,7 @@ export const DictionarySelector = React.createClass({
     return(
       <select
         value={this.props.selectedDictionary}
-        onChange={e=>this.props.selectDictionary(e.target.value)}>
+        onChange={e => this.props.selectDictionary(e.target.value)}>
         {items}
       </select>
     );
@@ -31,7 +31,6 @@ export const DictionarySelector = React.createClass({
 });
 
 function mapStateToProps(state){
-  console.log(state);
   return {
     dictionaryList: state.getIn(['dictionaries', 'dictionaryList']),
     selectedDictionary: state.getIn(['dictionaries', 'selectedDictionary'])
