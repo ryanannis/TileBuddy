@@ -5,7 +5,7 @@ import * as actionCreators from '../action_creators';
 
 export const BoardCell = React.createClass({
   render: function(){
-    let occupation = this.props.letter !== "" ?
+    let occupation = this.props.letter !== '' ?
                       this.props.letter :
                       'm';
     return (

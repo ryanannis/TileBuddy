@@ -7,6 +7,8 @@ import {Directions} from '../input_directions.js'
 
 export const WordList = React.createClass({
   render: function(){
+    let words = [];
+    
     return (
       <div>
         WordListContent
@@ -17,6 +19,7 @@ export const WordList = React.createClass({
 
 function mapStateToProps(state) {
   return {
+    wordList: state.getIn(['wordDisplay', 'wordList'])
   }
 };
 

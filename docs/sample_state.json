@@ -1,8 +1,4 @@
 {
-  wordDisplay: {
-    sortedValue:
-    hoveredID:
-  },
   board: {
     inputDirection: "RIGHT",
     bonusmap: [[]],
@@ -18,13 +14,22 @@
     ]
 
   },
-  solution_display :{
-    1: {
-      word: "Word",
-      score: 145,
-      row: 8,
-      col: 5,
-      direction: down
-    }
-   }
+  wordDisplay{
+    hoveredIndex: 2,
+    wordList:[
+      {
+        word: "One",
+        score: 145,
+        row: 8,
+        col: 5,
+        direction: down
+      },
+      {
+        word: "Two",
+        score: 110,
+        row: 5,
+        col: 3
+      }
+    ]
+  }
 }

@@ -16,6 +16,7 @@ export const Scrabble = React.createClass({
           <DictionarySelectorContainer />
           <BoardContainer />
           <RackContainer />
+          <WordListContainer />
           <SearchContainer />
        </div>
      );

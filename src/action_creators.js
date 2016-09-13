@@ -17,42 +17,10 @@ function requestDictionary(url){
   }
 }
 
-function recieveDictionary(name, dictionaryPromise){
-  let root = new Trie();
-  dictionaryPromise.text()
-    .then(text => {
-      for(let word of text.split('\n')){
-        console.log(word);
-        root.addWord(word);
-      }
-       return {
-        type: actionTypes.fetch_dictionary_success,
-        name,
-        rootNode
-     }
-  });
-  /* TODO:  If this causes performance problems with memory then
-   * maybe we can somehow do buffered streaming?*/
-  console.log(dictionaryWrapper.dictionary);
-  
-}
-
 function failRecievingDictionary(url){
   return {
     type: actionTypes.fetch_dictionary_failure,
     url
-  }
-}
-
-function loadDictionary(name, url){
-  console.log(url);
-  return (dispatch, getState) => {
-    const state = getState();
-    dispatch(requestDictionary(name));
-    //TODO: add visual display for failure
-    return fetch(url)
-      .then(response => dispatch(recieveDictionary(name, response)))
-      .catch(err => console.log(err))
   }
 }
 
@@ -67,7 +35,22 @@ export function loadDictionaryIfNeeded(name, url, callback){
     }
     /* Load the dictionary and execute the callback */
     else{
-      loadDictionary(name, url)(dispatch, getState).then(callback());
+      const state = getState();
+      dispatch(requestDictionary(name));
+      fetch(url)
+         .then(response => response.text())
+         .then(text => {
+           let rootNode = new Trie();
+           for(let word of text.split('\n')){
+              rootNode.addWord(word);
+           }
+           dispatch({
+            type: actionTypes.fetch_dictionary_success,
+            name,
+            rootNode
+           });
+         })
+         .catch(err => console.log(err))
     }
   }
 }

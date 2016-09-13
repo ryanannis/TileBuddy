@@ -1,5 +1,5 @@
 {
-  "name": "Scrabble-Solver",
+  "name": "scrabble-solver",
   "version": "1.0.0",
   "description": "Webapp for generation of move lists from scrabble-like games",
   "scripts": {

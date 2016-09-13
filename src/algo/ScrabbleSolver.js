@@ -2,7 +2,7 @@
  * more details on the algorithm.*/
 function ScrabbleSolver(trieRoot, board, rack){
   let crossCheck = Array(15);
-  let wordList = Array();
+  let wordList = [];
   let orientation = "across";
 
   function rotate(){
@@ -27,12 +27,14 @@ function ScrabbleSolver(trieRoot, board, rack){
   function isSquareAnchor(r, c){
     if(crossCheck[r][c])
       return true; //Cross checks are always anchors
-    if( r < 14 && board[r+1][c] !== " ")
+    if( r < 14 && board[r+1][c] !== ' ')
       return true;
-    if( r > 0 && board[r-1][c] !== " ")
+    if( r > 0 && board[r-1][c] !== ' ')
       return true;
+    return false;
   }
 
+  /* Returns true if a whole word is in the dictionary */
   function isWordValid(word){
     let node = trieRoot;
     for(letter of word){
@@ -40,13 +42,15 @@ function ScrabbleSolver(trieRoot, board, rack){
       if(!node)
         return false;
     }
+
     if(node.isTerminal())
       return true;
+
     return false;
   }
 
   function addCrossCheck(r, c, preWord, postWord){
-    let validLetters = Array();
+    let validLetters = [];
     for(tile of rack){
       if(isWordValid(preWord + tile + postWord)){
         validLetters.push(tile);
@@ -57,20 +61,21 @@ function ScrabbleSolver(trieRoot, board, rack){
   function computeCrossChecks(){
     for(let r = 0; r < 15; r++){
       for(let c = 0; c < 15; c++){
-        if(crossCheck[r][c] !== " ")
-           continue;
-        let preWord = Array();
-        let postWord = Array();
-
-        for(let tr = r - 1; r >= 0; r--){
-          let tile = board[tr][c];
-          if(tile === " ")
+        /* The vertical part of the word above the letter */
+        let preWord = [];
+        /* The vertical part of the word below the letter */
+        let postWord = [];
+ 
+        for(let q = r - 1; q >= 0; q--){
+          let tile = board[q][c];
+          if(tile === ' ')
             break;
           preWord.add(tile);
         }
-        for(let tr = r + 1; tr < 15; tr++){
-          let tile = board[tr][c];
-          if(tile === " ")
+
+        for(let q = r + 1; q < 15; q++){
+          let tile = board[q][c];
+          if(tile === ' ')
             break;
           postWord.add(tile);
         }
@@ -79,11 +84,17 @@ function ScrabbleSolver(trieRoot, board, rack){
       }
     }
 
+    /* Finds the farthest left a word containing the tile at 
+     * square (r,c) can be extended */
     function getLeftLimit(r, c){
-      for(let i = 0, --r; r >= 0; i++, r--){
-        if(board[r][c] !== " " || isSquareAnchor[r][c])
+      r = r-1;
+      for(let i = 0; r >= 0; i++, r--){
+        if(board[r][c] !== ' ' || isSquareAnchor[r][c])
           break;
       }
+
+      /* If we encounter our last empty square not at the board's edge,
+         that means there is tile to the left of it */
       if(r !== 0) i--;
       return i;
     }
@@ -105,8 +116,8 @@ function ScrabbleSolver(trieRoot, board, rack){
 
     function extendRight(partialWord, node, r, c){
       if(c > 14) return;
-      if(board[r][c] === " "){
-        if(isTerminal(node) && (c === 14 || board[r][c+1] === " ")){
+      if(board[r][c] === ' '){
+        if(isTerminal(node) && (c === 14 || board[r][c+1] === ' ')){
           addWord(r, c - partialWord.length + 1, partialWord);
         }
         for(let i = 0 ; i < rack.length; i++){
@@ -130,4 +141,4 @@ function ScrabbleSolver(trieRoot, board, rack){
   }
 };
 
-export ScrabbleSolver;
+export {ScrabbleSolver};

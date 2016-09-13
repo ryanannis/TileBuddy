@@ -16,7 +16,8 @@ function wordDisplay(state, action){
   switch(action.type){
     case actionTypes.execute_search: {
       let selectedDictionaryName = state.getIn(['dictionaries', 'selectedDictionary']);
-      let rootNode = state.getIn(['dictionaries', 'dictionaryList', selectedDictionaryName]);
+      let rootNode = state.getIn(['dictionaries', 'dictionaryList'])[selectedDictionaryName];
+      console.log(rootNode);
     }
   }
 
@@ -60,11 +61,7 @@ function dictionaries(state = Map({
     case actionTypes.select_dictionary:
       return state.set(selectedDictionary, action.dictionaryName);
     case actionTypes.fetch_dictionary_success:
-      return state.setIn(['dictionaryList', action.name], {
-        url: state.getIn['dictionaryList', action.name, 'url'],
-        isFetching: false,
-        rooteNode: action.rootNode
-      });
+      console.log(action.rootNode)
     case actionTypes.fetch_dictionary_request:
       return state; //Visual display, TODO
     case actionTypes.fetch_dictionary_failure:
@@ -75,6 +72,7 @@ function dictionaries(state = Map({
 
 /* We don't use default combineReducers since wordDisplay is not independent and needs entire state.*/
 export default function reducer(state = Map({}), action){
+  console.log(action);
   return(Map({
        board: board(state.get('board'), action),
        rack: rack(state.get('rack'), action),
