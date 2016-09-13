@@ -1,7 +1,8 @@
 import {Map, List, fromJS} from 'immutable';
 import {combineReducers} from 'redux-immutable';
 import * as actionTypes from './action_types';
-import {Directions} from './input_directions'
+import {Directions} from './input_directions';
+import {ScrabbleSolver} from '..algo/ScrabbleSolver';
 
 let defaultBoardState = Array(15*15).fill('');
 
@@ -17,7 +18,10 @@ function wordDisplay(state, action){
     case actionTypes.execute_search: {
       let selectedDictionaryName = state.getIn(['dictionaries', 'selectedDictionary']);
       let rootNode = state.getIn(['dictionaries', 'dictionaryList'])[selectedDictionaryName];
-      console.log(rootNode);
+      
+      let board = state.getIn(['board', 'letterMap']);
+      let rack = state.get('rack'); 
+      state.setIn(['wordDisplay', 'wordList'], solveBoard(rootNode, rack));
     }
   }
 
@@ -61,7 +65,14 @@ function dictionaries(state = Map({
     case actionTypes.select_dictionary:
       return state.set(selectedDictionary, action.dictionaryName);
     case actionTypes.fetch_dictionary_success:
-      console.log(action.rootNode)
+      let dictionaryList = state.get('dictionaryList');
+      
+      /* SORRY JAVASCRIPT GODS 😢. I WILL NEVER MIX IMMUTABLEJS WITH
+       * PLAIN OBJECTS EVER AGAIN.*/
+      let clonedDictionaryList = JSON.parse(JSON.stringify(dictionaryList));
+      clonedDictionaryList[action.name].rootNode = action.rootNode; 
+
+      return state.set('dictionaryList', clonedDictionaryList);
     case actionTypes.fetch_dictionary_request:
       return state; //Visual display, TODO
     case actionTypes.fetch_dictionary_failure:
@@ -72,6 +83,7 @@ function dictionaries(state = Map({
 
 /* We don't use default combineReducers since wordDisplay is not independent and needs entire state.*/
 export default function reducer(state = Map({}), action){
+  console.log(state);
   console.log(action);
   return(Map({
        board: board(state.get('board'), action),

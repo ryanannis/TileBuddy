@@ -1,9 +1,9 @@
 /* See https://www.cs.cmu.edu/afs/cs/academic/class/15451-s06/www/lectures/scrabble.pdf for
  * more details on the algorithm.*/
-function ScrabbleSolver(trieRoot, board, rack){
+function solveBoard(trieRoot, board, rack){
   let crossCheck = Array(15);
   let wordList = [];
-  let orientation = "across";
+  let horizontal = true;
 
   function rotate(){
     let newBoard = Array(15);
@@ -141,4 +141,4 @@ function ScrabbleSolver(trieRoot, board, rack){
   }
 };
 
-export {ScrabbleSolver};
+export { solveBoard };
