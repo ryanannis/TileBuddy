@@ -2,7 +2,7 @@ import {Map, List, fromJS} from 'immutable';
 import {combineReducers} from 'redux-immutable';
 import * as actionTypes from './action_types';
 import {Directions} from './input_directions';
-import {ScrabbleSolver} from '..algo/ScrabbleSolver';
+import solveBoard from './algo/ScrabbleSolver';
 
 let defaultBoardState = Array(15*15).fill('');
 
@@ -12,16 +12,21 @@ let DICTIONARYLIST ={
     fetching: false
 }};
 
-/* Be careful here, state is global state, NOT just wordDisplay */
+/* Be careful here, state is global state, NOT just wordDisplay
+ * because this part of the reducer has dependencies on other
+ * parts of the reducer. */
 function wordDisplay(state, action){
   switch(action.type){
     case actionTypes.execute_search: {
       let selectedDictionaryName = state.getIn(['dictionaries', 'selectedDictionary']);
-      let rootNode = state.getIn(['dictionaries', 'dictionaryList'])[selectedDictionaryName];
+      let rootNode = state.getIn(['dictionaries', 'dictionaryList'])[selectedDictionaryName].rootNode;
       
       let board = state.getIn(['board', 'letterMap']);
-      let rack = state.get('rack'); 
-      state.setIn(['wordDisplay', 'wordList'], solveBoard(rootNode, rack));
+      let stateRack = state.get('rack').get('tiles');
+
+      let rack = stateRack.filter(e => e !== '');
+
+      state.setIn(['wordDisplay', 'wordList'], solveBoard(rootNode, board, rack));
     }
   }
 
@@ -83,8 +88,6 @@ function dictionaries(state = Map({
 
 /* We don't use default combineReducers since wordDisplay is not independent and needs entire state.*/
 export default function reducer(state = Map({}), action){
-  console.log(state);
-  console.log(action);
   return(Map({
        board: board(state.get('board'), action),
        rack: rack(state.get('rack'), action),

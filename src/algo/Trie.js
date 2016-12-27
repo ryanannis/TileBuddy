@@ -24,9 +24,10 @@ class Trie{
   }
 
   advance(letter){
-    if(!(letter in this.edges))
+    if(!(this.edges.has(letter))){ 
       return false;
-    return this.edges[letter];
+    }
+    return this.edges.get(letter);
   }
 }
 
