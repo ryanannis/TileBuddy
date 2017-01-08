@@ -4,14 +4,18 @@ import {connect} from 'react-redux';
 import * as actionCreators from '../action_creators';
 import { BoardCellContainer } from './BoardCell';
 import {Directions} from '../input_directions.js'
+import {Button} from 'react-bootstrap';
 
 export const Search = React.createClass({
   render: function(){
     return(
       <div>
-        <button className='search' onClick={ e => this.props.executeSearch() } >
+       <Button 
+        onClick={e => this.props.executeSearch()}
+        bsStyle="primary"
+      >
           Search!
-        </button>
+        </Button>
       </div>
     );
   }

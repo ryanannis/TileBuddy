@@ -23,7 +23,7 @@ export const DictionarySelector = React.createClass({
     }
     return(
       <FormGroup controlId="formControlsSelect">
-      <ControlLabel>Board Layout</ControlLabel>
+      <ControlLabel>Dictionary</ControlLabel>
       <FormControl 
         onChange={e => this.props.selectDictionary(e.target.value)}
         value={this.props.selectedDictionary}
@@ -43,7 +43,9 @@ function mapStateToProps(state){
   }
 };
 
-export const DictionarySelectorContainer = connect(
+const BoardLayoutSelector = connect(
   mapStateToProps,
   actionCreators
 )(DictionarySelector);
+
+export default BoardLayoutSelector;

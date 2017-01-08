@@ -9,7 +9,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/Squeenix/ScrabbleSolver"
+    "url": "https://github.com/Squeenix/Descrabuler"
   },
   "keywords": [
     "react"
@@ -17,9 +17,9 @@
   "author": "Ryan Annis <tinnymint@gmail.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/Squeenix/ScrabbleSolver/issues"
+    "url": "https://github.com/Squeenix/Descrabuler/issues"
   },
-  "homepage": "https://github.com/Squeenix/ScrabbleSolver",
+  "homepage": "https://github.com/Squeenix/Descrabuler",
   "devDependencies": {
     "babel-core": "^6.0.20",
     "babel-eslint": "^4.1.3",

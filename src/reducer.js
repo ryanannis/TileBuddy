@@ -25,12 +25,16 @@ function wordDisplay(state, action){
       let stateRack = state.get('rack').get('tiles');
 
       let rack = stateRack.filter(e => e !== '');
+      
+      const wordList = solveBoard(rootNode, board, rack);
 
-      state.setIn(['wordDisplay', 'wordList'], solveBoard(rootNode, board, rack));
+      console.log(wordList);
+      console.log('test');
+      return state.wordDisplay ? state.wordDisplay.setIn(['wordDisplay', 'wordList']) : Map({wordList: wordList});
     }
   }
 
-  return state.wordDisplay ? state.wordDisplay : Map({});
+  return state.wordDisplay || Map({});
 }
 
 function board(state = Map({

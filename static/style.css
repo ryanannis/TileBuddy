@@ -1,13 +1,28 @@
-table {
-  width: 700px;
-  height: 700px;
+div.padding{
+  padding-top: 26px;
+}
+div.Board{
+  width: 100%;
+  height: 100%;
+}
+div.Board table {
+  border-collapse: collapse;
+  display: inline-table;
+  border-spacing: 0;
+  width: 100%;
+  height: 100%;
+  border: 1px solid;
+  border-color: #ccc;
 }
 
-td {
+div.Board td {
   width: 5%;
   height: 5%;
+  border: 1px solid;
+  border-color: #ccc;
 }
-input {
+
+div.Board input {
   border:none;
   width: 100%;
   text-align: center;
@@ -17,22 +32,43 @@ input {
   padding: 0 0 0 0;
 }
 
-table {
-    border-collapse: collapse;
-    display: inline-table;
-    border-spacing: 0;
-    border: 2px solid;
-    border-color: #FFFFFF;
-}
-
-td {
-    border: 1px solid;
-    border-color: #818181;
-}
-
 .rackTileSlot {
-    border: 1px solid;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+    box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+    -webkit-transition: border-color ease-in-out .15s,-webkit-box-shadow ease-in-out .15s;
+    -o-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+    transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+    font-size: 14px;
+    color: #555;
+    line-height: 1.42857143;
+    border: 1px solid #ccc;
+    border-radius: 4px;
     width: 50px;
+    text-align: center;
+    vertical-align: middle;
     height: 50px;
-    border-color: #818181;
+    margin: 0 2px 0 0;
+    padding: 0 0 0 0;
+}
+
+.footer {
+  margin-top:50px;
+  color: #555;
+}
+
+/* Hack by Nathan Ryan @ http://stackoverflow.com/questions/5445491/height-equal-to-dynamic-width-css-fluid-layout */
+#boardContainer {
+    display: inline-block;
+    position: relative;
+    width: 100%;
+}
+#boardDummy {
+    margin-top: 100%; /* suqare aspect ratio */
+}
+#boardElement {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
 }

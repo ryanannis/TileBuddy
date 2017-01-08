@@ -193,7 +193,6 @@ function solveBoard(trieRoot, board, rack){
   }
 
   exec();
-  console.log('wordlist', wordList);
 
   return wordList;
 };
