@@ -5,7 +5,7 @@ function solveBoard(trieRoot, board, rack){
   let crossCheck = Array(255);
   let wordList = [];
   let horizontal = true;
-
+  console.log(trieRoot);
   /* Rotates the board, used because we compute horizontal words
    * and vertical words in the same fashion */
   function rotate(){
@@ -120,7 +120,7 @@ function solveBoard(trieRoot, board, rack){
     if(limit > 0){
       for(let i = 0 ; i < rack.length; i++){
         let tile = rack[i];
-        let advance = node.advanceance(tile);
+        let advance = node.advance(tile);
         if(advance){
           rack.splice(i, 1);
           leftPrefixes(partialWord + tile, advance, limit - 1);
@@ -132,7 +132,12 @@ function solveBoard(trieRoot, board, rack){
 
   function extendRight(partialWord, node, r, c){
     if(c > 14) return;
-    console.log(`PW:${partialWord} R:${r} C:${c}`);
+    if(node.isTerminal()){
+      if(!partialWord){
+        console.log(node);
+      }
+      addWord(r, c - partialWord.length, partialWord);
+    }
 
     if(board[r * 15 + c] === ''){
       /* Special handling for end of board */
@@ -143,8 +148,7 @@ function solveBoard(trieRoot, board, rack){
         let tile = rack[i];
         let advance = node.advance(tile);
 
-
-        if(advance && !crossCheck[r * 15 + c] || crossCheck[r * 15 + c].indexOf(tile) !== -1){
+        if((advance && crossCheck[r * 15 + c].length === 0) || crossCheck[r * 15 + c].indexOf(tile) !== -1){
           /* Remove the tile from the rack */
           rack.splice(i, 1);
           
@@ -189,7 +193,7 @@ function solveBoard(trieRoot, board, rack){
   }
 
   exec();
-  console.log(wordList);
+  console.log('wordlist', wordList);
 
   return wordList;
 };

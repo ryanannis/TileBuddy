@@ -72,8 +72,7 @@ function dictionaries(state = Map({
     case actionTypes.fetch_dictionary_success:
       let dictionaryList = state.get('dictionaryList');
       
-      /* SORRY JAVASCRIPT GODS 😢. I WILL NEVER MIX IMMUTABLEJS WITH
-       * PLAIN OBJECTS EVER AGAIN.*/
+      /* don't mix immutablejs with plain js boys😢.*/
       let clonedDictionaryList = JSON.parse(JSON.stringify(dictionaryList));
       clonedDictionaryList[action.name].rootNode = action.rootNode; 
 

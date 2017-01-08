@@ -42,7 +42,9 @@ export function loadDictionaryIfNeeded(name, url, callback){
          .then(text => {
            let rootNode = new Trie();
            for(let word of text.split('\n')){
-              rootNode.addWord(word.toLowerCase());
+              if(word){
+                rootNode.addWord(word.toLowerCase());
+              }
            }
            dispatch({
             type: actionTypes.fetch_dictionary_success,
