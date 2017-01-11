@@ -191,9 +191,9 @@ function solveBoard(trieRoot, board, rack){
     computeCrossChecks();
     findAllWords();
   }
-
+  
   exec();
-
+  console.log(wordList);
   return wordList;
 };
 

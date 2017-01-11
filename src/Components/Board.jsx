@@ -7,6 +7,24 @@ import {BoardCellContainer} from './BoardCell';
 import {Directions} from '../input_directions.js'
 
 export const Board = React.createClass({
+    getHoverLetter: function(row, col){
+      const shouldHover = this.props.shouldHover;
+      const hoverWord = this.props.hoverWord;
+      if(shouldHover){
+        const word = hoverWord.word;
+        if(hoverWord.vertical){
+        }
+        else{
+          if(row === hoverWord.row){
+            if(col >= hoverWord.col && col - hoverWord.col < word.length){
+              return word[col-hoverWord.col];
+            }
+          }
+        }
+      }
+      return '';
+      
+    },
     handleAlphabeticInput: function(key, r, c){
       this.props.setLetter(key, r, c);
       if(this.props.inputDirection === Directions.RIGHT){
@@ -96,6 +114,7 @@ export const Board = React.createClass({
               color = { formatValid ? colors[format[c+r*15]] : '#FFF' } //#FFF is default color
               ref = {ref => this.refs[r * 15 + c] = ref}
               key = {r * 15 + c}
+              hoverLetter = {this.getHoverLetter(r, c)}
               letter = {this.props.board[r * 15 + c]}
               keyPressHandler = {(action)=>this.handleBoardInput(action, r, c)}
             />
@@ -123,6 +142,8 @@ export const Board = React.createClass({
 
 function mapStateToProps(state) {
   return {
+    shouldHover: state.getIn(['ui', 'resultsHover']),
+    hoverWord: state.getIn(['ui', 'hoverWord']),
     board: state.getIn(['board', 'letterMap']),
     inputDirection: state.getIn(['board', 'inputDirection'])
   }

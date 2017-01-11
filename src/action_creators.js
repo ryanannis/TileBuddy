@@ -38,6 +38,22 @@ function failRecievingDictionary(url){
   }
 }
 
+export function setHoverWord(word, row, col, vertical){
+  return{
+    type: actionTypes.set_hover_word,
+    word,
+    row,
+    col,
+    vertical
+  }
+}
+
+export function unsetHoverWord(word, row, col, vertical){
+  return{
+    type: actionTypes.unset_hover_word,
+  }
+}
+
 export function loadFormatIfNeeded(name, callback){
   return (dispatch, getState) => {
     const state = getState();

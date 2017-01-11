@@ -4,13 +4,15 @@ import {connect} from 'react-redux';
 import * as actionCreators from '../action_creators';
 import {Directions} from '../input_directions.js'
 
-export const WordListWord = React.createClass({
+const WordListWord = React.createClass({
   render: function(){
     return (
-      <tr>
-        <td> { this.props.word } </td>
+      <tr onMouseEnter={this.props.onMouseEnter} onMouseLeave={this.props.onMouseLeave}>
+        <td> { this.props.word || this.props.hoverLetter } </td>
         <td> { this.props.score } </td>
       </tr>
     );
   }
 });
+
+export default WordListWord;

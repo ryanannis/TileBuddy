@@ -1,3 +1,5 @@
+export const unset_hover_word  = 'unset_hover_word';
+export const set_hover_word = 'set_hover_word';
 export const select_dictionary = 'select_dictionary';
 export const select_format = 'select_format';
 export const fetch_format_request = 'fetch_format_request';

@@ -4,7 +4,7 @@ import {connect} from 'react-redux';
 import * as actionCreators from '../action_creators';
 import { BoardCellContainer } from './BoardCell';
 import {Directions} from '../input_directions.js'
-import {WordListWord} from './WordListWord';
+import WordListWord from './WordListWord';
 import {Table} from 'react-bootstrap';
 
 const WordList = React.createClass({
@@ -19,7 +19,18 @@ const WordList = React.createClass({
         </tr>
       </thead>
         <tbody>
-          {this.props.wordList.map(word => <WordListWord word={word.word} score={0} />)}
+          {
+            this.props.wordList.map(
+              word => 
+                <WordListWord
+                  word={word.word}
+                  vertical={false}
+                  score={0}
+                  onMouseEnter={() => this.props.setHoverWord(word.word, word.row, word.col, false)}
+                  onMouseLeave={() => this.props.unsetHoverWord()}
+                />
+              )
+          }
           {!this.props.wordList || this.props.wordList.length === 0 ?
             <tr><td colSpan="2">No Results</td></tr> : null
           }
@@ -30,7 +41,6 @@ const WordList = React.createClass({
 });
 
 function mapStateToProps(state) {
-  console.log(state);
   return {
     wordList: state.getIn(['wordDisplay', 'wordList']) || []
   }

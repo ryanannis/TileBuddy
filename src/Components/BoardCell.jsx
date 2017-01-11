@@ -11,7 +11,7 @@ export const BoardCell = React.createClass({
     return (
       <input
         style={{background: this.props.color}}
-        value={this.props.letter}
+        value={this.props.letter || this.props.hoverLetter }
         onKeyDown={this.props.keyPressHandler}
         className={`${this.props.inputDirection} ${occupation}`}
       />

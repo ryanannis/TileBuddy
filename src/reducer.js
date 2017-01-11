@@ -22,6 +22,7 @@ let DICTIONARYLIST ={
  * because this part of the reducer has dependencies on other
  * parts of the reducer. */
 function wordDisplay(state, action){
+  const wordDisplayState = state.get('wordDisplay') ;
   switch(action.type){
     case actionTypes.execute_search: {
       let selectedDictionaryName = state.getIn(['dictionaries', 'selectedDictionary']);
@@ -33,12 +34,11 @@ function wordDisplay(state, action){
       let rack = stateRack.filter(e => e !== '');
       
       const wordList = solveBoard(rootNode, board, rack);
-
-      return state.wordDisplay ? state.wordDisplay.setIn(['wordDisplay', 'wordList']) : Map({wordList: wordList});
+      return wordDisplayState ? wordDisplayState.set('wordList', wordList) : Map({wordList: wordList});
     }
   }
 
-  return state.wordDisplay || Map({});
+  return wordDisplayState || Map({});
 }
 
 function board(state = Map({
@@ -126,10 +126,28 @@ function formats(state = Map({
   return state;
 }
 
+function ui(
+  state = Map({resultsHover: false}),
+  action
+){
+  switch(action.type){
+    case actionTypes.set_hover_word: {
+      return state.set(
+        'hoverWord', 
+        {word: action.word, row:action.row, col: action.col, vertical: action.vertical}
+      ).set('resultsHover', true);
+    }
+    case actionTypes.unset_hover_word: {
+      return state.set('resultsHover', false);
+    }
+  }
+  return state;
+}
+
 /* We don't use default combineReducers since wordDisplay is not independent and needs entire state.*/
 export default function reducer(state = Map({}), action){
-  console.log(action);
   return(Map({
+       ui: ui(state.get('ui'), action),
        board: board(state.get('board'), action),
        rack: rack(state.get('rack'), action),
        dictionaries: dictionaries(state.get('dictionaries'), action),
