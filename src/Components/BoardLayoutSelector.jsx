@@ -4,14 +4,14 @@ import {connect} from 'react-redux';
 import * as actionCreators from '../action_creators';
 import {FormControl, FormGroup, ControlLabel} from 'react-bootstrap';
 
-export const DictionarySelector = React.createClass({
+const BoardFormatSelector = React.createClass({
   render: function(){
-    let dictionaryList = this.props.dictionaryList;
+    let boardFormatList = this.props.boardFormatList;
     let items = [];
-    for(let key in dictionaryList){
-      if(dictionaryList.hasOwnProperty(key)){
+    for(let key in boardFormatList){
+      if(boardFormatList.hasOwnProperty(key)){
         let name = key;
-        let url = dictionaryList[key].url;
+        let url = boardFormatList[key].url;
         items.push(
           <option
             key={name}
@@ -23,10 +23,10 @@ export const DictionarySelector = React.createClass({
     }
     return(
       <FormGroup controlId="formControlsSelect">
-      <ControlLabel>Dictionary</ControlLabel>
+      <ControlLabel>Board Format</ControlLabel>
       <FormControl 
-        onChange={e => this.props.selectDictionary(e.target.value)}
-        value={this.props.selectedDictionary}
+        onChange={e => this.props.selectFormat(e.target.value)}
+        value={this.props.selectedFormat}
         componentClass="select" placeholder="select"
       >        
         {items}
@@ -38,14 +38,14 @@ export const DictionarySelector = React.createClass({
 
 function mapStateToProps(state){
   return {
-    dictionaryList: state.getIn(['dictionaries', 'dictionaryList']),
-    selectedDictionary: state.getIn(['dictionaries', 'selectedDictionary'])
+    boardFormatList: state.getIn(['formats', 'formatList']),
+    selectedFormat: state.getIn(['format', 'selectedFormat'])
   }
 };
 
-const BoardLayoutSelector = connect(
+const BoardFormatSelectorContainer = connect(
   mapStateToProps,
   actionCreators
-)(DictionarySelector);
+)(BoardFormatSelector);
 
-export default BoardLayoutSelector;
+export default BoardFormatSelectorContainer;

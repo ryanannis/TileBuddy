@@ -81,7 +81,6 @@ function dictionaries(state = Map({
       let dictionaryList = state.get('dictionaryList');
       
       let clonedDictionaryList = JSON.parse(JSON.stringify(dictionaryList));
-      cons
       clonedDictionaryList[action.name].rootNode = action.rootNode; 
       clonedDictionaryList[action.name].fetching = false; 
 
@@ -129,6 +128,7 @@ function formats(state = Map({
 
 /* We don't use default combineReducers since wordDisplay is not independent and needs entire state.*/
 export default function reducer(state = Map({}), action){
+  console.log(action);
   return(Map({
        board: board(state.get('board'), action),
        rack: rack(state.get('rack'), action),

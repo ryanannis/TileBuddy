@@ -8,7 +8,6 @@ export const BoardCell = React.createClass({
     let occupation = this.props.letter !== '' ?
                       this.props.letter :
                       'm';
-    console.log(this.props.color);
     return (
       <input
         style={{background: this.props.color}}

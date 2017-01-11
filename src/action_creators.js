@@ -10,6 +10,13 @@ export function selectDictionary(name){
   }
 }
 
+export function selectFormat(name){
+  return {
+    type: actionTypes.select_format,
+    name
+  }
+}
+
 function requestFormat(name){
   return {
     type: actionTypes.fetch_format_request,
@@ -31,13 +38,10 @@ function failRecievingDictionary(url){
   }
 }
 
-
 export function loadFormatIfNeeded(name, callback){
   return (dispatch, getState) => {
     const state = getState();
-    console.log(name);
     let format = getState().getIn(['formats', 'formatList'])[name];
-    console.log(format);
     let url = format.url;
 
     /* Dictionary has already been loaded */
