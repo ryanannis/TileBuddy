@@ -173,7 +173,6 @@ function solveBoard(trieRoot, board, rack){
   function findWord(r,c){
     /* We only begin search at 'anchor' squares */
     if(isSquareAnchor(r,c)){
-      console.log(`${r} ${c}`);
       let limit = getLeftLimit(r,c);
       leftPrefixes('', trieRoot, limit, r, c);
     }
