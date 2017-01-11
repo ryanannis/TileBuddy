@@ -40,8 +40,9 @@ export const Rack = React.createClass({
   },
   removeTile: function(r){
     let tileList = this.props.rackTiles.slice(0);
-    tileList.splice(r, 0, '');
+    tileList.splice(r, 1);
     tileList.push('');
+    console.log(tileList);
     this.focusCell(r-1);
     this.props.setRack(tileList);
   },

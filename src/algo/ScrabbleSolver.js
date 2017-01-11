@@ -5,6 +5,7 @@ function solveBoard(trieRoot, board, rack){
   let crossCheck = Array(255);
   let wordList = [];
   let horizontal = true;
+  console.log(rack);
   console.log(trieRoot);
   /* Rotates the board, used because we compute horizontal words
    * and vertical words in the same fashion */

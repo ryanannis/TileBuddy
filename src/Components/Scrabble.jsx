@@ -31,7 +31,7 @@ export const Scrabble = React.createClass({
             <Col md={1} />
             <Col md={4}>
               <PageHeader>
-                Descrabuler
+                TileBuddy
               </PageHeader>
               <DictionarySelectorContainer /> 
               <BoardLayoutSelector />
