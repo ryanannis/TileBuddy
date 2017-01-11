@@ -12,7 +12,12 @@ import {PageHeader,Grid,Row,Col} from 'react-bootstrap';
 import BoardLayoutSelector from './BoardLayoutSelector';
 
 export const Scrabble = React.createClass({
-    render: function(){
+    componentDidMount(){
+      if(!this.props.boardFormat.data){
+        this.props.loadFormatIfNeeded(this.props.boardFormatName);
+      }
+    },
+    render: function(boardFormatName){
       return (
         <div className = 'ScrabbleSolver'>
           <Grid>
@@ -23,7 +28,9 @@ export const Scrabble = React.createClass({
               <div id="boardContainer">
                 <div id="boardDummy"></div>
                 <div id="boardElement">
-                  <BoardContainer />
+                  <BoardContainer
+                    boardFormat={this.props.boardFormat}
+                   />
                 </div>
               </div>
               <RackContainer />
@@ -43,7 +50,7 @@ export const Scrabble = React.createClass({
               <SearchContainer />
               <div className="footer">
                 <hr />
-                <small>Descrabuler &copy; 2017 <a href="https://github.com/minimumcut">Ryan Annis</a> under the MIT License &nbsp;|&nbsp; <a href="https://github.com/minimumcut/Descrabuler"><img src="static/github_sm.png" /></a></small> 
+                <small>Tilebuddy &copy; 2017 <a href="https://github.com/minimumcut">Ryan Annis</a> under the MIT License &nbsp;|&nbsp; <a href="https://github.com/minimumcut/Descrabuler"><img src="static/github_sm.png" /></a></small> 
               </div>
             </Col>
           </Grid>
@@ -52,8 +59,12 @@ export const Scrabble = React.createClass({
     }
 });
 
-function mapStateToProps(){
-  return {}
+function mapStateToProps(state){
+  const boardFormatName = state.getIn(['formats', 'selectedFormat']);
+  return {
+    boardFormat: state.getIn(['formats', 'formatList'])[boardFormatName],
+    boardFormatName,
+  }
 }
 
 export const ScrabbleContainer = connect(

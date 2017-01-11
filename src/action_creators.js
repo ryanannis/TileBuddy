@@ -10,10 +10,17 @@ export function selectDictionary(name){
   }
 }
 
-function requestDictionary(url){
+function requestFormat(name){
+  return {
+    type: actionTypes.fetch_format_request,
+    name
+  }
+}
+
+function requestDictionary(name){
   return {
     type: actionTypes.fetch_dictionary_request,
-    url
+    name
   }
 }
 
@@ -21,6 +28,39 @@ function failRecievingDictionary(url){
   return {
     type: actionTypes.fetch_dictionary_failure,
     url
+  }
+}
+
+
+export function loadFormatIfNeeded(name, callback){
+  return (dispatch, getState) => {
+    const state = getState();
+    console.log(name);
+    let format = getState().getIn(['formats', 'formatList'])[name];
+    console.log(format);
+    let url = format.url;
+
+    /* Dictionary has already been loaded */
+    if(format.isFetching || format.data){
+      callback();
+      return;
+    }
+
+    /* Load the dictionary and execute the callback */
+    else{
+      const state = getState();
+      dispatch(requestFormat(name));
+      fetch(url)
+         .then(response => response.json())
+         .then(data => {
+           dispatch({
+            type: actionTypes.fetch_format_success,
+            name,
+            data,
+           });
+         })
+         .catch(err => console.log(err))
+    }
   }
 }
 
@@ -32,6 +72,7 @@ export function loadDictionaryIfNeeded(name, url, callback){
     /* Dictionary has already been loaded */
     if(dictionary.isFetching || dictionary.rootNode){
       callback();
+      return;
     }
     /* Load the dictionary and execute the callback */
     else{

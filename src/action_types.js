@@ -1,4 +1,7 @@
-export const change_selected_dictionary = 'change_selected_dictionary';
+export const select_dictionary = 'select_dictionary';
+export const select_format = 'select_format';
+export const fetch_format_request = 'fetch_format_request';
+export const fetch_format_success = 'fetch_format_success';
 export const fetch_dictionary_request = 'fetch_dictionary_request';
 export const fetch_dictionary_success = 'fetch_dictionary_success';
 export const fetch_dictionary_failure = 'fetch_dictionary_failure';

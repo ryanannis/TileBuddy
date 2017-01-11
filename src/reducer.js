@@ -6,6 +6,12 @@ import solveBoard from './algo/ScrabbleSolver';
 
 let defaultBoardState = Array(15*15).fill('');
 
+let FORMATLIST ={
+  'Scrabble': {
+    url: './static/boardFormats/scrabble.json',
+    fetching: false
+}};
+
 let DICTIONARYLIST ={
   'SOWPODS': {
     url: './static/wordlists/SOWPODS.txt',
@@ -28,8 +34,6 @@ function wordDisplay(state, action){
       
       const wordList = solveBoard(rootNode, board, rack);
 
-      console.log(wordList);
-      console.log('test');
       return state.wordDisplay ? state.wordDisplay.setIn(['wordDisplay', 'wordList']) : Map({wordList: wordList});
     }
   }
@@ -76,15 +80,49 @@ function dictionaries(state = Map({
     case actionTypes.fetch_dictionary_success:
       let dictionaryList = state.get('dictionaryList');
       
-      /* don't mix immutablejs with plain js boys😢.*/
       let clonedDictionaryList = JSON.parse(JSON.stringify(dictionaryList));
+      cons
       clonedDictionaryList[action.name].rootNode = action.rootNode; 
+      clonedDictionaryList[action.name].fetching = false; 
 
       return state.set('dictionaryList', clonedDictionaryList);
     case actionTypes.fetch_dictionary_request:
-      return state; //Visual display, TODO
+      /* Prevent double-loading the dictionary */
+      let _dictionaryList = state.get('dictionaryList');
+      let _clonedDictionaryList = JSON.parse(JSON.stringify(_dictionaryList));
+      console.log(action);
+      _clonedDictionaryList[action.name].fetching = true; 
+
+      return state.set('dictionaryList', _clonedDictionaryList);
     case actionTypes.fetch_dictionary_failure:
       return state; //Visual display only, TODO
+  }
+  return state;
+}
+
+function formats(state = Map({
+  formatList: FORMATLIST,
+  selectedFormat: 'Scrabble'
+}), action){
+  switch(action.type){
+    case actionTypes.select_format:
+      return state.set(selectedDictionary, action.dictionaryName);
+    case actionTypes.fetch_format_success:
+      let formatList = state.get('formatList');
+      
+      let formatListClone = JSON.parse(JSON.stringify(formatList));
+      formatListClone[action.name].data = action.data; 
+      formatListClone[action.name].fetching = false; 
+
+      return state.set('formatList', formatListClone);
+
+    case actionTypes.fetch_format_request:
+      /* Prevent double-loading the dictionary */
+      let _formatList = state.get('formatList');
+      let _clonedFormatList = JSON.parse(JSON.stringify(_formatList));
+      _clonedFormatList[action.name].fetching = true; 
+
+       return state.set('formatList', _clonedFormatList);
   }
   return state;
 }
@@ -95,6 +133,7 @@ export default function reducer(state = Map({}), action){
        board: board(state.get('board'), action),
        rack: rack(state.get('rack'), action),
        dictionaries: dictionaries(state.get('dictionaries'), action),
+       formats: formats(state.get('formats'), action),        
        wordDisplay: wordDisplay(state, action)
   }))
 }

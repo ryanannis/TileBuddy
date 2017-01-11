@@ -85,10 +85,15 @@ export const Board = React.createClass({
     },
     createRow: function(r){
       let cells = [];
+      const boardFormat = this.props.boardFormat;
+      const formatValid = boardFormat && boardFormat.data;
+      const colors = formatValid ? boardFormat.data.colors : null;
+      const format = formatValid ? boardFormat.data.board: null;
       for(let c = 0; c < 15; c++){
         cells.push(
           <td key = {'d' + c}>
             <BoardCellContainer
+              color = { formatValid ? colors[format[c+r*15]] : '#FFF' } //#FFF is default color
               ref = {ref => this.refs[r * 15 + c] = ref}
               key = {r * 15 + c}
               letter = {this.props.board[r * 15 + c]}
