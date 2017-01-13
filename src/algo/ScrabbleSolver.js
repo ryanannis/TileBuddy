@@ -2,7 +2,9 @@
  * more details on the algorithm.*/
 
 function solveBoard(trieRoot, board, rack){
+  console.log(board);
   let crossCheck = Array(255);
+  let anchors = Array(255);
   let wordList = [];
   let horizontal = true;
   console.log(rack);
@@ -21,20 +23,50 @@ function solveBoard(trieRoot, board, rack){
   }
 
   function addWord(r, c, word){
-    wordList.push({word, row:c, col: c});
+    wordList.push({word, row: r, col: c});
+  }
+
+  /* Cross checks must be generated before running this */
+  function computeAnchors(){
+    anchors.fill(false);
+    for(let r = 0; r < 15; r++){
+      let isThereTileLeftmost = board[r * 15] !== '';
+
+      for(let c = 0; c < 15; c++){
+        if(board[r * 15 + c] === ''){ /* Only blank tiles can be anchors */
+            if( c === 0 || board[r * 15  + (c - 1)] === ''){ /*There is no tile to the left */
+            
+            /* Any Cross Check that doesn't have a tile to the left is an Anchor */
+            if(crossCheck[r * 15 + c].length > 0){
+                anchors[r * 15 + c] = true;
+                continue;
+            }
+
+            /*There is tile to the right */
+            if( c < 14 && board[r * 15  + (c + 1)] !== ''){ 
+              anchors[r * 15 + c] = true;
+              continue;
+            }
+          }
+
+        /* Only time that a space with a tile to the left can be an
+         * anchor is all the left spaces to the edge of the board
+         * is filled */
+        if(isThereTileLeftmost){
+              anchors[r * 15] = true;
+              isThereTileLeftmost = false;
+              continue;
+            }
+        }
+      }
+    }
   }
 
   function isSquareAnchor(r, c){
-    if(crossCheck[r * 15 + c].length > 0){
-      return true; //Cross checks are always anchors
+    if(anchors[r * 15 + c]){
+      console.log('anchor: ', 'r:', r, 'c:', c);
     }
-    if( r < 14 && board[r * 15  + (c + 1)] !== ''){
-      return true;
-    }
-    if( r > 0 && board[r* 15 + (c - 1)] !== ''){
-      return true;
-    }
-    return false;
+    return anchors[r * 15 + c];
   }
 
   /* Returns true if a whole word is in the Trie */
@@ -97,19 +129,28 @@ function solveBoard(trieRoot, board, rack){
   /* Finds the farthest left a word containing the tile at 
     * square (r,c) can be extended */
   function getLeftLimit(r, c){
-    r = r-1;
-
-    let i;
-    for(i = 0; r >= 0; i++, r--){
-      if(board[r * 15 + c] !== ' ' || isSquareAnchor[r * 15 + c])
+    let limit = 0 ; /* We can always use the anchor square so limit is always at least 1*/
+    
+    /* Special case for when tiles are filled to the left side of the board */ 
+    if(board[r][c] !== ''){
+      return 0;
+    }
+    
+    while(c >= 0){
+      if(board[r * 15 + c] === '' && crossCheck[r * 15 + c].length === 0){
+        c--;
+        limit++;
+      }
+      else{
         break;
+      }
     }
 
     /* If we encounter our last empty square not at the board's edge,
         that means there is tile to the left of it */
-    if(r !== 0) i--;
+    if(r === 0) limit++;
     
-    return i;
+    return limit;
   }
 
 
@@ -121,11 +162,12 @@ function solveBoard(trieRoot, board, rack){
     if(limit > 0){
       for(let i = 0 ; i < rack.length; i++){
         let tile = rack[i];
+        console.log(rack);
         let advance = node.advance(tile);
         if(advance){
           rack.splice(i, 1);
-          leftPrefixes(partialWord + tile, advance, limit - 1);
-          rack.push(tile);
+          leftPrefixes(partialWord + tile, advance, limit - 1, r, c);
+          rack.splice(i, 0, tile);
         }
       }
     }
@@ -133,10 +175,10 @@ function solveBoard(trieRoot, board, rack){
 
   function extendRight(partialWord, node, r, c){
     if(c > 14) return;
-    if(node.isTerminal()){
-      if(!partialWord){
-        console.log(node);
-      }
+    //console.log('pw:', partialWord);
+    //console.log('r:', r);
+    //console.log('c:', c);
+    if(node.isTerminal() && board[r * 15 + c] === ''){
       addWord(r, c - partialWord.length, partialWord);
     }
 
@@ -157,7 +199,7 @@ function solveBoard(trieRoot, board, rack){
           extendRight(partialWord + tile, advance, r, c+1);
 
           /* Put tile back */
-          rack.push(tile);
+          rack.splice(i, 0, tile);
         }
       }
     }
@@ -189,6 +231,7 @@ function solveBoard(trieRoot, board, rack){
 
   function exec(){
     computeCrossChecks();
+    computeAnchors();
     findAllWords();
   }
   

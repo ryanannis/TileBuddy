@@ -112,6 +112,7 @@ export function loadDictionaryIfNeeded(name, url, callback){
             name,
             rootNode
            });
+           callback();
          })
          .catch(err => console.log(err))
     }
