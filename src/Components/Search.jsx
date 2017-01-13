@@ -11,10 +11,11 @@ export const Search = React.createClass({
     return(
       <div>
        <Button 
+        disabled={this.props.isLoading}
         onClick={e => this.props.executeSearch()}
         bsStyle="primary"
       >
-          Search!
+          {this.props.isLoading ? "Loading Dictionaries" : "Search" }
         </Button>
       </div>
     );

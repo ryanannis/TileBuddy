@@ -19,7 +19,6 @@ export const Scrabble = React.createClass({
       }
     },
     render: function(boardFormatName){
-      const isLoading = this.props.dictionaryList[this.props.selectedDictionary].fetching;
       return (
         <div className = 'ScrabbleSolver'>
           <Grid>
@@ -50,7 +49,8 @@ export const Scrabble = React.createClass({
                 Word List
               </h4>
               <WordListContainer />
-              <SearchContainer isLoading={isLoading}/>
+              <Spinner />              
+              <SearchContainer />
               <div className="footer">
                 <hr />
                 <small>Tilebuddy &copy; 2017 <a href="https://github.com/minimumcut">Ryan Annis</a> under the MIT License &nbsp;|&nbsp; <a href="https://github.com/minimumcut/Descrabuler"><img src="static/github_sm.png" /></a></small> 
@@ -65,8 +65,6 @@ export const Scrabble = React.createClass({
 function mapStateToProps(state){
   const boardFormatName = state.getIn(['formats', 'selectedFormat']);
   return {
-    dictionaryList: state.getIn(['dictionaries', 'dictionaryList']),
-    selectedDictionary: state.getIn(['dictionaries', 'selectedDictionary']),
     boardFormat: state.getIn(['formats', 'formatList'])[boardFormatName],
     boardFormatName,
   }

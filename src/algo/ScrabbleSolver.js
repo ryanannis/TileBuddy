@@ -191,11 +191,14 @@ function solveBoard(trieRoot, board, rack){
         let tile = rack[i];
         let advance = node.advance(tile);
 
-        if((advance && crossCheck[r * 15 + c].length === 0) || crossCheck[r * 15 + c].indexOf(tile) !== -1){
+        if(advance && ( ( crossCheck[r * 15 + c].length === 0) || crossCheck[r * 15 + c].indexOf(tile) !== -1)){
           /* Remove the tile from the rack */
           rack.splice(i, 1);
           
           /* Find all right prefixes */
+          if(!advance.isTerminal){
+            console.log(advance);
+          }
           extendRight(partialWord + tile, advance, r, c+1);
 
           /* Put tile back */
