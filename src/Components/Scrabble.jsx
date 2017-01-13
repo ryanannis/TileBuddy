@@ -34,6 +34,7 @@ export const Scrabble = React.createClass({
                 </div>
               </div>
               <RackContainer />
+              <div className="rackTileLabel">Tile Rack</div>
             </Col>
             <Col md={1} />
             <Col md={4}>

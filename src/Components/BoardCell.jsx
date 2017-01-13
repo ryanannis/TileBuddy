@@ -5,15 +5,14 @@ import * as actionCreators from '../action_creators';
 
 export const BoardCell = React.createClass({
   render: function(){
-    let occupation = this.props.letter !== '' ?
-                      this.props.letter :
-                      'm';
+    let occupied = (this.props.letter || this.props.hoverLetter) ? 'occupied' : '';
+    const style =  this.props.color ? {background: this.props.color} : null;
     return (
       <input
-        style={{background: this.props.color}}
+        style={style}
         value={this.props.letter || this.props.hoverLetter }
         onKeyDown={this.props.keyPressHandler}
-        className={`${this.props.inputDirection} ${occupation}`}
+        className={`${this.props.inputDirection} ${occupied}`}
       />
     );
   }
