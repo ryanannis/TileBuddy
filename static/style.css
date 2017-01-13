@@ -26,21 +26,19 @@ div.Board table {
   border-spacing: 0;
   width: 100%;
   height: 100%;
-  border: 3px solid;
   border-color: #fff;
 }
 
 div.Board td {
   width: 5%;
   height: 5%;
-  border: 3px solid;
   border-color: #fff;
 }
 
 div.Board input {
   border:none;
   width: 100%;
-  color: #FFF;
+  color: #555;
   text-transform: uppercase;
   font-weight: bold;
   text-align: center;
@@ -48,7 +46,11 @@ div.Board input {
   font-size: 1.4em;
   height: 100%;
   margin: 0 0 0 0;
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
   padding: 0 0 0 0;
+  border: 3px solid #fff;
 }
 
 div.Board input.occupied {
@@ -56,6 +58,18 @@ div.Board input.occupied {
   -webkit-border-radius: 3px; 
   -moz-border-radius: 3px;  
   border-radius: 3px;
+  color: #FFF;
+}
+
+div.Board input.RIGHT:focus {
+  outline:none;
+  text-indent: -9999em; /*hide blinking cursor*/
+  border-right-color: #555 !important;
+}
+div.Board input.DOWN:focus {
+  outline:none;
+  text-indent: -9999em; /*hide blinking cursor*/
+  border-bottom-color: #555 !important;
 }
 
 .rackTileSlot {
