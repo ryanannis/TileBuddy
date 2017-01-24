@@ -21,13 +21,15 @@ function solveBoard(trieRoot, board, rack, tileValues, bonusMap){
     board = newBoard;
   }
 
-  function addWord(r, c, word){
-    const wordValue = calculateWordValue(r, c, word);
-    if(horizontal){
-      wordList.push({word, vertical: false, row: r, col: c, score: wordValue});
-    }
-    else{
-      wordList.push({word, vertical: true, row: c, col: r, score: wordValue});
+  function addWord(r, c, word, numPlaced){
+    if(numPlaced > 0){
+      const wordValue = calculateWordValue(r, c, word);
+      if(horizontal){
+        wordList.push({word, vertical: false, row: r, col: c, score: wordValue});
+      }
+      else{
+        wordList.push({word, vertical: true, row: c, col: r, score: wordValue});
+      }
     }
   }
 
@@ -232,17 +234,17 @@ function solveBoard(trieRoot, board, rack, tileValues, bonusMap){
     }
   }
 
-  function extendRight(partialWord, node, r, c){
+  function extendRight(partialWord, node, r, c, numPlaced = 0){
     console.log(partialWord, r, c);
     if(c > 14) return;
     if(node.isTerminal() && board[r * 15 + c] === ''){
-      addWord(r, c - partialWord.length, partialWord);
+      addWord(r, c - partialWord.length, partialWord, numPlaced);
     }
 
     if(board[r * 15 + c] === ''){
       /* Special handling for end of board */
       if(node.isTerminal() && (c === 14 || board[r * 15 + c + 1] === ' ')){
-          addWord(r, c - partialWord.length + 1, partialWord);
+          addWord(r, c - partialWord.length + 1, partialWord, numPlaced);
       }
       for(let i = 0 ; i < rack.length; i++){
         let tile = rack[i];
@@ -256,7 +258,7 @@ function solveBoard(trieRoot, board, rack, tileValues, bonusMap){
           if(!advance.isTerminal){
             console.log(advance);
           }
-          extendRight(partialWord + tile, advance, r, c+1);
+          extendRight(partialWord + tile, advance, r, c+1, numPlaced + 1);
 
           /* Put tile back */
           rack.splice(i, 0, tile);
@@ -267,7 +269,7 @@ function solveBoard(trieRoot, board, rack, tileValues, bonusMap){
       let tile = board[r * 15 + c];
       let advance = node.advance(tile)
       if(advance){
-        extendRight(partialWord + tile, advance, r, c+1);
+        extendRight(partialWord + tile, advance, r, c+1, numPlaced);
       }
     }
   }

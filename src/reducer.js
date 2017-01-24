@@ -35,7 +35,7 @@ function wordDisplay(state, action){
       const boardFormat =  state.getIn(['formats', 'formatList'])[boardFormatName];
 
       let rack = stateRack.filter(e => e !== '');
-      console.log(boardFormat);
+      
       
       const wordList = solveBoard(rootNode, board, rack, boardFormat.data.values, boardFormat.data.board);
       return wordDisplayState ? wordDisplayState.set('wordList', wordList) : Map({wordList: wordList});
@@ -47,15 +47,19 @@ function wordDisplay(state, action){
 
 function board(state = Map({
   letterMap: defaultBoardState,
+  boardValid: false,
   inputDirection: Directions.RIGHT
 }), action){
   switch(action.type){
+    case actionTypes.execute_search: {
+      return state.set('boardValid', true);
+    }
     case actionTypes.set_letter: {
       let newState = state.update('letterMap', arr => {
         let newArr = arr.slice();
         newArr[action.row * 15 + action.col] = action.letter;
         return newArr;
-      });
+      }).set('boardValid', false);
       return newState;
     }
     case actionTypes.set_input_direction:

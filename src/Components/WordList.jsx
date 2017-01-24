@@ -23,7 +23,7 @@ const WordList = React.createClass({
       </thead>
         <tbody>
           {
-            sortedWordList.map(
+            this.props.boardValid ? sortedWordList.map(
               (word, idx) => 
                 <WordListWord
                   lol={console.log(word)}
@@ -34,9 +34,9 @@ const WordList = React.createClass({
                   onMouseEnter={() => this.props.setHoverWord(word.word, word.row, word.col, word.vertical)}
                   onMouseLeave={() => this.props.unsetHoverWord()}
                 />
-              )
+              ) : null
           }
-          {!this.props.wordList || this.props.wordList.length === 0 ?
+          {!this.props.wordList || !this.props.boardValid || this.props.wordList.length === 0 ?
             <tr><td colSpan="2">No Results</td></tr> : null
           }
         </tbody>
@@ -47,7 +47,8 @@ const WordList = React.createClass({
 
 function mapStateToProps(state) {
   return {
-    wordList: state.getIn(['wordDisplay', 'wordList']) || []
+    wordList: state.getIn(['wordDisplay', 'wordList']) || [],
+    boardValid: state.getIn(['board', 'boardValid']),
   }
 };
 
