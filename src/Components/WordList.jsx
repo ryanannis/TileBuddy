@@ -9,7 +9,9 @@ import {Table} from 'react-bootstrap';
 
 const WordList = React.createClass({
   render: function(){
-    const sortedWordList = this.props.wordList.slice(0).sort((a,b) => a.score > b.score ).reverse();
+    const sortedWordList = this.props.wordList.slice(0);
+    sortedWordList.sort((a,b) => b.score - a.score);
+    console.log(sortedWordList);
     let words = [];
     return (
       <Table striped bordered condensed hover>
@@ -22,8 +24,9 @@ const WordList = React.createClass({
         <tbody>
           {
             sortedWordList.map(
-              word => 
+              (word, idx) => 
                 <WordListWord
+                  key={idx}
                   word={word.word}
                   vertical={word.vertical}
                   score={word.score}
