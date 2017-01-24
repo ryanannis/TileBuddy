@@ -13,6 +13,11 @@ export const Board = React.createClass({
       if(shouldHover){
         const word = hoverWord.word;
         if(hoverWord.vertical){
+          if(col === hoverWord.row){
+            if(row >= hoverWord.row && row - hoverWord.row < word.length){
+              return word[row-hoverWord.row];
+            }
+          }
         }
         else{
           if(row === hoverWord.row){

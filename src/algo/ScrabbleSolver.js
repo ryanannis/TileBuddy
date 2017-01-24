@@ -10,6 +10,7 @@ function solveBoard(trieRoot, board, rack, tileValues, bonusMap){
   /* Rotates the board, used because we compute horizontal words
    * and vertical words in the same fashion */
   function rotate(){
+    horizontal = false;
     let newBoard = Array(255);
     newBoard.fill('');
     for(let r = 0; r < 15; r++){
@@ -22,7 +23,7 @@ function solveBoard(trieRoot, board, rack, tileValues, bonusMap){
 
   function addWord(r, c, word){
     const wordValue = calculateWordValue(r, c, word);
-    wordList.push({word, row: r, col: c, score: wordValue});
+    wordList.push({word, vertical: !horizontal, row: r, col: c, score: wordValue});
   }
 
    function calculateWordValue(r_0, c_0, word){
@@ -304,6 +305,8 @@ function solveBoard(trieRoot, board, rack, tileValues, bonusMap){
     findAllWords();
   }
   
+  exec();
+  rotate();
   exec();
   return wordList;
 };
