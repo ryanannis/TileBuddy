@@ -1,5 +1,3 @@
-#TileBuddy
-
 ![tilebuddy](https://cloud.githubusercontent.com/assets/4493022/22237323/ef093822-e1bf-11e6-81e2-d0067cf7a4be.PNG)
 
 ## About
@@ -23,7 +21,7 @@ npm install
 npm start
 ```
 
-The board area can be navigated via keyboard and hovering over the words in the word list will show their location on the board.
+The board area can be navigated via keyboard.  Hovering over the words in the word list will show their location on the board.
 
 ## Status
 
@@ -31,6 +29,6 @@ The core algorithm is implemented but the UI is rough around the edges, mostly m
 
 Additional manual data input is also required for adding non-Scrabble boards.
 
-## Lisence
+## License
 
-This is lisenced under MIT so you are free to use this how you please (even commercial applications).  Just please credit me and link back to this page.
+This is licensed under MIT so you are free to use this how you please (even commercial applications).  Just please credit me and link back to this page.
