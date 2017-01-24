@@ -1,14 +1,12 @@
 /* See https://www.cs.cmu.edu/afs/cs/academic/class/15451-s06/www/lectures/scrabble.pdf for
  * more details on the algorithm.*/
 
-function solveBoard(trieRoot, board, rack){
-  console.log(board);
+function solveBoard(trieRoot, board, rack, tileValues){
+  let boardEmpty = board.every((item) => item === '');
   let crossCheck = Array(255);
   let anchors = Array(255);
   let wordList = [];
   let horizontal = true;
-  console.log(rack);
-  console.log(trieRoot);
   /* Rotates the board, used because we compute horizontal words
    * and vertical words in the same fashion */
   function rotate(){
@@ -28,6 +26,11 @@ function solveBoard(trieRoot, board, rack){
 
   /* Cross checks must be generated before running this */
   function computeAnchors(){
+    // Set center tile to anchor if board is empty
+    if(boardEmpty){
+      anchors[7 * 15 + 7] = true;
+      return;
+    }
     anchors.fill(false);
     for(let r = 0; r < 15; r++){
       let isThereTileLeftmost = board[r * 15] !== '';
