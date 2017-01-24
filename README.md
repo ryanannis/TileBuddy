@@ -18,7 +18,7 @@ yarn start
 or if you are using npm
 ```
 npm install
-npm start
+npm run start
 ```
 
 The board area can be navigated via keyboard.  Hovering over the words in the word list will show their location on the board.

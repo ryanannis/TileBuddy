@@ -26,6 +26,7 @@ const WordList = React.createClass({
             sortedWordList.map(
               (word, idx) => 
                 <WordListWord
+                  lol={console.log(word)}
                   key={idx}
                   word={word.word}
                   vertical={word.vertical}

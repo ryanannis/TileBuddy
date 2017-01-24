@@ -15,7 +15,7 @@ function solveBoard(trieRoot, board, rack, tileValues, bonusMap){
     newBoard.fill('');
     for(let r = 0; r < 15; r++){
       for(let c = 0; c < 15; c++){
-        newBoard[c* 15 + r] = board[r * 15 + c];
+        newBoard[c * 15 + r] = board[r * 15 + c];
       }
     }
     board = newBoard;
@@ -23,7 +23,12 @@ function solveBoard(trieRoot, board, rack, tileValues, bonusMap){
 
   function addWord(r, c, word){
     const wordValue = calculateWordValue(r, c, word);
-    wordList.push({word, vertical: !horizontal, row: r, col: c, score: wordValue});
+    if(horizontal){
+      wordList.push({word, vertical: false, row: r, col: c, score: wordValue});
+    }
+    else{
+      wordList.push({word, vertical: true, row: c, col: r, score: wordValue});
+    }
   }
 
    function calculateWordValue(r_0, c_0, word){
@@ -97,33 +102,24 @@ function solveBoard(trieRoot, board, rack, tileValues, bonusMap){
     }
     anchors.fill(false);
     for(let r = 0; r < 15; r++){
-      let isThereTileLeftmost = board[r * 15] !== '';
-
       for(let c = 0; c < 15; c++){
-        if(board[r * 15 + c] === ''){ /* Only blank tiles can be anchors */
-            if( c === 0 || board[r * 15  + (c - 1)] === ''){ /*There is no tile to the left */
-            
+        /* All blank tiles with Cross Checks are and no tile to the left are anchors */
+        if(board[r * 15 + c] === ''){ 
+          if( c === 0 || board[r * 15  + (c - 1)] === ''){ /*There is no tile to the left */    
             /* Any Cross Check that doesn't have a tile to the left is an Anchor */
             if(crossCheck[r * 15 + c].length > 0){
                 anchors[r * 15 + c] = true;
                 continue;
             }
+          }
+        }
 
-            /*There is tile to the right */
-            if( c < 14 && board[r * 15  + (c + 1)] !== ''){ 
+        /* All non-blank tiles with no tile to the left are anchors */
+        if(board[r * 15 + c] !== ''){
+          if( c === 0 || board[r * 15  + (c - 1)] === ''){ /*There is no tile to the left */
               anchors[r * 15 + c] = true;
               continue;
-            }
           }
-
-        /* Only time that a space with a tile to the left can be an
-         * anchor is all the left spaces to the edge of the board
-         * is filled */
-        if(isThereTileLeftmost){
-              anchors[r * 15] = true;
-              isThereTileLeftmost = false;
-              continue;
-            }
         }
       }
     }
@@ -196,12 +192,9 @@ function solveBoard(trieRoot, board, rack, tileValues, bonusMap){
   /* Finds the farthest left a word containing the tile at 
     * square (r,c) can be extended */
   function getLeftLimit(r, c){
-    let limit = 0 ; /* We can always use the anchor square so limit is always at least 1*/
+    let limit = 0 ; 
     
-    /* Special case for when tiles are filled to the left side of the board */ 
-    if(board[r][c] !== ''){
-      return 0;
-    }
+    c--;
     
     while(c >= 0){
       if(board[r * 15 + c] === '' && crossCheck[r * 15 + c].length === 0){
@@ -224,16 +217,15 @@ function solveBoard(trieRoot, board, rack, tileValues, bonusMap){
   /* Generates all the left prefixes for a word at a square (r,c) 
    * and then extends each one rightwards.  Note that extendRight
    * INCLUDES the anchor square. */
-  function leftPrefixes(partialWord, node, limit, r, c){
-    extendRight(partialWord, node, r, c);
+  function leftPrefixes(partialWord, node, limit, r, c, numPlaced = 0){
+    extendRight(partialWord, node, r, c, numPlaced);
     if(limit > 0){
       for(let i = 0 ; i < rack.length; i++){
         let tile = rack[i];
-        console.log(rack);
         let advance = node.advance(tile);
         if(advance){
           rack.splice(i, 1);
-          leftPrefixes(partialWord + tile, advance, limit - 1, r, c);
+          leftPrefixes(partialWord + tile, advance, limit - 1, r, c, numPlaced + 1);
           rack.splice(i, 0, tile);
         }
       }
@@ -241,10 +233,8 @@ function solveBoard(trieRoot, board, rack, tileValues, bonusMap){
   }
 
   function extendRight(partialWord, node, r, c){
+    console.log(partialWord, r, c);
     if(c > 14) return;
-    //console.log('pw:', partialWord);
-    //console.log('r:', r);
-    //console.log('c:', c);
     if(node.isTerminal() && board[r * 15 + c] === ''){
       addWord(r, c - partialWord.length, partialWord);
     }
@@ -252,7 +242,7 @@ function solveBoard(trieRoot, board, rack, tileValues, bonusMap){
     if(board[r * 15 + c] === ''){
       /* Special handling for end of board */
       if(node.isTerminal() && (c === 14 || board[r * 15 + c + 1] === ' ')){
-        addWord(r, c - partialWord.length + 1, partialWord);
+          addWord(r, c - partialWord.length + 1, partialWord);
       }
       for(let i = 0 ; i < rack.length; i++){
         let tile = rack[i];
@@ -304,10 +294,13 @@ function solveBoard(trieRoot, board, rack, tileValues, bonusMap){
     computeAnchors();
     findAllWords();
   }
-  
+
+  console.log(board); 
   exec();
   rotate();
   exec();
+  console.log(board);
+  console.log(wordList);
   return wordList;
 };
 
