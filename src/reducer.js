@@ -31,9 +31,13 @@ function wordDisplay(state, action){
       let board = state.getIn(['board', 'letterMap']);
       let stateRack = state.get('rack').get('tiles');
 
+      const boardFormatName = state.getIn(['formats', 'selectedFormat']);
+      const boardFormat =  state.getIn(['formats', 'formatList'])[boardFormatName];
+
       let rack = stateRack.filter(e => e !== '');
+      console.log(boardFormat);
       
-      const wordList = solveBoard(rootNode, board, rack);
+      const wordList = solveBoard(rootNode, board, rack, boardFormat.data.values, boardFormat.data.board);
       return wordDisplayState ? wordDisplayState.set('wordList', wordList) : Map({wordList: wordList});
     }
   }

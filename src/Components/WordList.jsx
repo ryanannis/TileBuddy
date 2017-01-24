@@ -25,7 +25,7 @@ const WordList = React.createClass({
                 <WordListWord
                   word={word.word}
                   vertical={false}
-                  score={0}
+                  score={word.score}
                   onMouseEnter={() => this.props.setHoverWord(word.word, word.row, word.col, false)}
                   onMouseLeave={() => this.props.unsetHoverWord()}
                 />

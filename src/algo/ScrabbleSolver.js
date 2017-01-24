@@ -1,7 +1,7 @@
 /* See https://www.cs.cmu.edu/afs/cs/academic/class/15451-s06/www/lectures/scrabble.pdf for
  * more details on the algorithm.*/
 
-function solveBoard(trieRoot, board, rack, tileValues){
+function solveBoard(trieRoot, board, rack, tileValues, bonusMap){
   let boardEmpty = board.every((item) => item === '');
   let crossCheck = Array(255);
   let anchors = Array(255);
@@ -21,8 +21,49 @@ function solveBoard(trieRoot, board, rack, tileValues){
   }
 
   function addWord(r, c, word){
-    wordList.push({word, row: r, col: c});
+    const wordValue = calculateWordValue(r, c, word);
+    wordList.push({word, row: r, col: c, score: wordValue});
   }
+
+   function calculateWordValue(r_0, c_0, word){
+     let sum = 0;
+     for(let c = c_0; c < c_0 + word.length; c++){
+       const boardTile = board[r_0 * 15  + c];
+       /* Tile is already on the board */
+       if(boardTile !== ''){
+          sum += tileValues[boardTile];
+       } else {
+         /* If the beginning and ending row are the same then we know we didn't form a new word vertically*/
+         let beginningRow = r_0;
+         let endingRow = r_0;
+
+         let colSum = 0;
+         // Scan for start of word upwards
+         for(let r = r_0 - 1; r >= 0; r--){
+            if(board[r * 15  + c] === ''){
+              break;
+            }
+            colSum += tileValues[board[r * 15  + c]];
+            beginningRow = r;
+         }
+         // Scan downwards for end of word, adding up tile values
+         for(let r = r_0 + 1; r < 15; r++){
+            if(board[r * 15  + c] === ''){
+              break;
+            }
+            colSum += tileValues[board[r * 15  + c]];
+            endingRow = r;
+         }
+
+         if(beginningRow !== endingRow){
+           console.log(word);
+           sum += colSum + tileValues[word[c-c_0]];
+         }
+         sum += colSum + tileValues[word[c-c_0]]
+       }
+     }
+     return sum;
+   }
 
   /* Cross checks must be generated before running this */
   function computeAnchors(){
@@ -242,7 +283,6 @@ function solveBoard(trieRoot, board, rack, tileValues){
   }
   
   exec();
-  console.log(wordList);
   return wordList;
 };
 
