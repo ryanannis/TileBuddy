@@ -26,13 +26,34 @@ function solveBoard(trieRoot, board, rack, tileValues, bonusMap){
   }
 
    function calculateWordValue(r_0, c_0, word){
+     let wordMultiplier = 1;
      let sum = 0;
+     let columnSums = 0;
      for(let c = c_0; c < c_0 + word.length; c++){
        const boardTile = board[r_0 * 15  + c];
        /* Tile is already on the board */
        if(boardTile !== ''){
           sum += tileValues[boardTile];
        } else {
+        const bonus = bonusMap[r_0 * 15  + c];
+        let letterMultiplier = 1;
+        let columnWordMultiplier = 1;
+
+        switch(bonus){
+          case 'dw':
+            columnWordMultiplier = 2;
+            break;
+          case 'tw':
+            columnWordMultiplier = 3;
+            break;
+          case 'dl':
+            letterMultiplier = 2;
+            break;
+          case 'dl':
+            letterMultiplier = 3;
+            break;
+        }
+
          /* If the beginning and ending row are the same then we know we didn't form a new word vertically*/
          let beginningRow = r_0;
          let endingRow = r_0;
@@ -56,13 +77,14 @@ function solveBoard(trieRoot, board, rack, tileValues, bonusMap){
          }
 
          if(beginningRow !== endingRow){
-           console.log(word);
-           sum += colSum + tileValues[word[c-c_0]];
+           columnSums += colSum + letterMultiplier * tileValues[word[c-c_0]];
          }
-         sum += colSum + tileValues[word[c-c_0]]
+
+         wordMultiplier *= columnWordMultiplier;
+         sum += colSum + letterMultiplier * tileValues[word[c-c_0]]
        }
      }
-     return sum;
+     return sum * wordMultiplier + columnSums;
    }
 
   /* Cross checks must be generated before running this */
