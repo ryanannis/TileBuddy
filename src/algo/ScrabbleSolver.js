@@ -21,8 +21,8 @@ function solveBoard(trieRoot, board, rack, tileValues, bonusMap){
     board = newBoard;
   }
 
-  function addWord(r, c, word, numPlaced){
-    if(numPlaced > 0){
+  function addWord(r, c, word, numPlaced, anchorCovered){
+    if(numPlaced > 0 && anchorCovered){
       const wordValue = calculateWordValue(r, c, word);
       if(horizontal){
         wordList.push({word, vertical: false, row: r, col: c, score: wordValue});
@@ -231,16 +231,16 @@ function solveBoard(trieRoot, board, rack, tileValues, bonusMap){
     }
   }
 
-  function extendRight(partialWord, node, r, c, numPlaced = 0){
+  function extendRight(partialWord, node, r, c, numPlaced = 0, anchorCovered = false){
     if(c > 14) return;
-    if(node.isTerminal() && board[r * 15 + c] === ''){
-      addWord(r, c - partialWord.length, partialWord, numPlaced);
+    if(node.isTerminal() && board[r * 15 + c] === '' && !(r == 7 && c == 7)){
+      addWord(r, c - partialWord.length, partialWord, numPlaced, anchorCovered);
     }
 
     if(board[r * 15 + c] === ''){
       /* Special handling for end of board */
       if(node.isTerminal() && (c === 14 || board[r * 15 + c + 1] === ' ')){
-          addWord(r, c - partialWord.length + 1, partialWord, numPlaced);
+          addWord(r, c - partialWord.length + 1, partialWord, numPlaced, anchorCovered);
       }
       for(let i = 0 ; i < rack.length; i++){
         let tile = rack[i];
@@ -254,7 +254,7 @@ function solveBoard(trieRoot, board, rack, tileValues, bonusMap){
           if(!advance.isTerminal){
             //console.log(advance);
           }
-          extendRight(partialWord + tile, advance, r, c+1, numPlaced + 1);
+          extendRight(partialWord + tile, advance, r, c+1, numPlaced + 1, true);
 
           /* Put tile back */
           rack.splice(i, 0, tile);
@@ -265,7 +265,7 @@ function solveBoard(trieRoot, board, rack, tileValues, bonusMap){
       let tile = board[r * 15 + c];
       let advance = node.advance(tile)
       if(advance){
-        extendRight(partialWord + tile, advance, r, c+1, numPlaced);
+        extendRight(partialWord + tile, advance, r, c+1, numPlaced, true);
       }
     }
   }

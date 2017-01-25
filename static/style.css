@@ -54,12 +54,22 @@ div.Board input {
 }
 
 div.Board input.occupied {
-  background: #6B4423 !important;
+  background: #9F8170 !important;
   -webkit-border-radius: 3px; 
   -moz-border-radius: 3px;  
   border-radius: 3px;
   color: #FFF;
 }
+
+div.Board input.showcase {
+  background: #FFD700 !important;
+}
+
+.wordListScroller {
+    max-height: 200px;
+    overflow: auto;
+}
+
 
 div.Board input.RIGHT:focus {
   outline:none;

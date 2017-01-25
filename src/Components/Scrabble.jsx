@@ -53,7 +53,9 @@ export const Scrabble = React.createClass({
               <h4>
                 Word List
               </h4>
-              <WordListContainer />
+              <div className="wordListScroller">
+                <WordListContainer />
+              </div>
               <SearchContainer isLoading={isLoading}/>
               <div className="footer">
                 <hr />
