@@ -3,12 +3,14 @@
 ## About
 
 Tilebuddy is a React/Redux webapp for solving Scrabble Boards.  It is based off the algorithm described in the whitepaper at 
-https://pdfs.semanticscholar.org/da31/cb24574f7c881a5dbf008e52aac7048c9d9c.pdf except it uses a Trie instead of a DAWG
+https://pdfs.semanticscholar.org/da31/cb24574f7c881a5dbf008e52aac7048c9d9c.pdf, except it uses a Trie instead of a DAWG
 because of the relative difficulty in serializing a dawg.
 
 ## Usage
 
-If you just wish to use the application, go to https://minimumcut.github.io/TileBuddy.  For now, to install do:
+If you just wish to use the application, go to https://minimumcut.github.io/TileBuddy.  
+
+If you wish to develop, do:
 
 ```
 yarn install
@@ -27,7 +29,7 @@ The board area can be navigated via keyboard.  Hovering over the words in the wo
 
 The core algorithm is implemented but the UI is rough around the edges, mostly missing visual cues for interactions.  Please submit a push request or issue if you wish to improve anything.
 
-Additional manual data input is also required for adding non-Scrabble boards.
+Additional manual data input is also required for adding non-Scrabble boards.  Pull requests are accepted if you want to add your favorite word game.  The format is fairly intuitive and can be found in /static/boardFormats.
 
 ## License
 
