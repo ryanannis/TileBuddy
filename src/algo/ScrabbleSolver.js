@@ -148,15 +148,24 @@ function solveBoard(trieRoot, board, rack, tileValues, bonusMap){
 
   function addCrossCheck(r, c, preWord, postWord){
     let validLetters = [];
+    let hadInvalid = false;
     if(preWord.length > 0 || postWord.length > 0){
       for(const tile of rack){
         const word = preWord + tile + postWord;
         if(isWordValid(word)){
           validLetters.push(tile);
         }
+        else{
+          hadInvalid = true;
+        }
       }
     }
-    crossCheck[r * 15 + c] = validLetters;
+    if(hadInvalid && validLetters.length === 0){
+      crossCheck[r * 15 + c] = ['?'];
+    }
+    else{
+      crossCheck[r * 15 + c] = validLetters;
+    }
   }
 
   function computeCrossChecks(){

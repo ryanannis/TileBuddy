@@ -11,7 +11,6 @@ const WordList = React.createClass({
   render: function(){
     const sortedWordList = this.props.wordList.slice(0);
     sortedWordList.sort((a,b) => b.score - a.score);
-    console.log(sortedWordList);
     let words = [];
     return (
       <Table striped bordered condensed hover>
@@ -26,7 +25,6 @@ const WordList = React.createClass({
             this.props.boardValid ? sortedWordList.map(
               (word, idx) => 
                 <WordListWord
-                  lol={console.log(word)}
                   key={idx}
                   word={word.word}
                   vertical={word.vertical}
