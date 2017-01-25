@@ -128,9 +128,6 @@ function solveBoard(trieRoot, board, rack, tileValues, bonusMap){
   }
 
   function isSquareAnchor(r, c){
-    if(anchors[r * 15 + c]){
-      console.log('anchor: ', 'r:', r, 'c:', c);
-    }
     return anchors[r * 15 + c];
   }
 
@@ -235,7 +232,6 @@ function solveBoard(trieRoot, board, rack, tileValues, bonusMap){
   }
 
   function extendRight(partialWord, node, r, c, numPlaced = 0){
-    console.log(partialWord, r, c);
     if(c > 14) return;
     if(node.isTerminal() && board[r * 15 + c] === ''){
       addWord(r, c - partialWord.length, partialWord, numPlaced);
@@ -256,7 +252,7 @@ function solveBoard(trieRoot, board, rack, tileValues, bonusMap){
           
           /* Find all right prefixes */
           if(!advance.isTerminal){
-            console.log(advance);
+            //console.log(advance);
           }
           extendRight(partialWord + tile, advance, r, c+1, numPlaced + 1);
 
@@ -297,12 +293,9 @@ function solveBoard(trieRoot, board, rack, tileValues, bonusMap){
     findAllWords();
   }
 
-  console.log(board); 
   exec();
   rotate();
   exec();
-  console.log(board);
-  console.log(wordList);
   return wordList;
 };
 

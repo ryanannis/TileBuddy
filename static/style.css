@@ -63,12 +63,12 @@ div.Board input.occupied {
 
 div.Board input.RIGHT:focus {
   outline:none;
-  text-indent: -9999em; /*hide blinking cursor*/
+  
   border-right-color: #555 !important;
 }
 div.Board input.DOWN:focus {
   outline:none;
-  text-indent: -9999em; /*hide blinking cursor*/
+  
   border-bottom-color: #555 !important;
 }
 

@@ -97,7 +97,6 @@ function dictionaries(state = Map({
       /* Prevent double-loading the dictionary */
       let _dictionaryList = state.get('dictionaryList');
       let _clonedDictionaryList = JSON.parse(JSON.stringify(_dictionaryList));
-      console.log(action);
       _clonedDictionaryList[action.name].fetching = true; 
 
       return state.set('dictionaryList', _clonedDictionaryList);

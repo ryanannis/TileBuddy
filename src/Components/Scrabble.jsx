@@ -8,7 +8,7 @@ import {RackContainer} from './Rack';
 import {DictionarySelectorContainer} from './DictionarySelector';
 import {WordListContainer} from './WordList';
 import {SearchContainer} from './Search';
-import {PageHeader,Grid,Row,Col} from 'react-bootstrap';
+import {PageHeader,Grid,Row,Col, Panel} from 'react-bootstrap';
 import BoardLayoutSelector from './BoardLayoutSelector';
 import Spinner from './Spinner';
 
@@ -43,6 +43,10 @@ export const Scrabble = React.createClass({
               <PageHeader>
                 TileBuddy
               </PageHeader>
+              <Panel>
+                <small><strong>Controls</strong>: Use &larr; &uarr; &rarr; &darr; to navigate.  Hover over a word to reveal it's location on the board.</small>
+              </Panel>
+              <hr />
               <DictionarySelectorContainer /> 
               <BoardLayoutSelector />
               <hr />
