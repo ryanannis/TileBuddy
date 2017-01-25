@@ -1,4 +1,4 @@
-![tilebuddy](https://cloud.githubusercontent.com/assets/4493022/22237323/ef093822-e1bf-11e6-81e2-d0067cf7a4be.PNG)
+[![tilebuddy](https://cloud.githubusercontent.com/assets/4493022/22237323/ef093822-e1bf-11e6-81e2-d0067cf7a4be.PNG)](https://minimumcut.github.io/TileBuddy)
 
 ## About
 
@@ -8,7 +8,7 @@ because of the relative difficulty in serializing a dawg.
 
 ## Usage
 
-Github pages will be set up for this respository shortly.  For now, to install do:
+If you just wish to use the application, go to https://minimumcut.github.io/TileBuddy.  For now, to install do:
 
 ```
 yarn install
