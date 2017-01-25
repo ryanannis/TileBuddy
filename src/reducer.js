@@ -8,13 +8,13 @@ let defaultBoardState = Array(15*15).fill('');
 
 let FORMATLIST ={
   'Scrabble': {
-    url: 'https://raw.githubusercontent.com/minimumcut/TileBuddy/gh-pages/static/boardFormats/scrabble.json',
+    url: './static/boardFormats/scrabble.json',
     fetching: false
 }};
 
 let DICTIONARYLIST ={
   'SOWPODS': {
-    url: 'https://raw.githubusercontent.com/minimumcut/TileBuddy/gh-pages/static/wordlists/SOWPODS.txt',
+    url: './static/wordlists/SOWPODS.txt',
     fetching: false
 }};
 
