@@ -1,5 +1,5 @@
 /*todo: turn letter into number and use arrays */
-class Trie{
+class Trie {
   constructor(){
     this.edges = new Map();
   }
